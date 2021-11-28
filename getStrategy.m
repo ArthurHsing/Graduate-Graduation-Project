@@ -12,7 +12,7 @@ function [xmin, FR] = getStrategy()
     Lb=[ones(1, deviceNum) edgeNum];
     Ub=[ones(1, deviceNum)*100 100];
     N=10; %种群大小
-    [xmin,fmin,CNVG, historyXpreys, FR]=HBA(fitfun,dim,Lb,Ub,T,N);
+    [xmin,fmin,CNVG, FR]=HBA(fitfun,dim,Lb,Ub,T,N);
     figure,
     semilogy(CNVG,'r')
     xlim([0 T]);

@@ -2,7 +2,7 @@ function [r] = setSystemConfig()
     global systemConfig;
     %任务情况
     systemConfig.taskSize = 1*10e6; % 1M bits
-    systemConfig.taskComputationIntensityPerBit = 5; % 10cycles
+    systemConfig.taskComputationIntensityPerBit = 15; % 10cycles
     %设备情况
     systemConfig.deviceCPUFrequency = 200*10e6; % 200MHz
     systemConfig.deviceNum = 49;% 设备个数

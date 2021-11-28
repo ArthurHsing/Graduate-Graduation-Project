@@ -43,7 +43,7 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     for i = 1:1:deviceNum
         ar_Device = deviceArrivalRate(i); %设备上的任务到达率（处理方式待定，主要是想处理成每个设备上的任务到达率都不一样）
         [Ws_Device_Per, PN_Device] = PerDeviceWs(devicesCapacity(i), ar_Device, sr_Device);
-        [wirelessTTPer] = wirelessTTFun(taskSize, PN_Device, wireless, wireless_gains(i));
+        [wirelessTTPer] = wirelessTTFun(taskSize, wireless, wireless_gains(i));
         if wirelessTTPer == inf
             disp('too big');
         end
@@ -58,7 +58,7 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     % 边缘节点->云节点有线信道的传输时延计算
     [wiredTT] = wiredTTFun(taskSize, PN_Edge, wired, PN_Devices_average);
     % 云节点上的逗留时间计算
-    [Ws_Cloud] =  CloudWs(ar_Edge, PN_Edge, sr_Cloud, PN_Devices_average);
+    [Ws_Cloud] =  CloudWs(ar_Edge, PN_Edge, sr_Cloud);
     % 适应度函数即总的逗留时间计算
     fitness = Ws_Device + Ws_Edge + Ws_Cloud + wirelessTT + wiredTT;
     fitnessRecord.Ws_Device = Ws_Device;
@@ -99,7 +99,7 @@ function [Ws_Device, PN_Device] = PerDeviceWs(N_Device, ar_Device, sr_Device)
 %     end
 end
 %% 设备->边缘节点 无线信道上的传输时间
-function [wirelessTTPer] = wirelessTTFun(taskSize, PN_Device, wireless, gain)
+function [wirelessTTPer] = wirelessTTFun(taskSize, wireless, gain)
     np = wireless.noisePower;   % 噪声功率
     tp = wireless.transmissionPower; %传输功率
     bw = wireless.bandWidth; %带宽
@@ -160,7 +160,7 @@ function [wiredTT] = wiredTTFun(taskSize, PN_Edge, wired, PN_Devices_average)
     end
 end
 %% 云节点上的逗留时间计算，函数封装
-function [Ws_Cloud] = CloudWs(ar_Edge, PN_Edge, sr_Cloud, PN_Devices_average)
+function [Ws_Cloud] = CloudWs(ar_Edge, PN_Edge, sr_Cloud)
     ar_Cloud = ar_Edge.*PN_Edge; %云节点上的任务到达率
 %     if sr_Cloud > ar_Cloud
 %         disp(sr_Cloud);

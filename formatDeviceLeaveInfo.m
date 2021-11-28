@@ -1,0 +1,26 @@
+% 对设备层所有设备输出的任务进行处理
+function[offloadedTasksFromDevice] = formatDeviceLeaveInfo(deviceResultArr)
+    global systemConfig;
+    frequencyRatio = systemConfig.deviceCPUFrequency./systemConfig.edgeCPUFrequency;
+    mergeArriveEdgeTimeLine = [deviceResultArr.arriveEdgeTimeline];
+    mergeLeaveSrvTime = [deviceResultArr.offloadedSrvTime];
+    mergeWirelessTrDelay = [deviceResultArr.wirelessTrDelay];
+    mergeArriveEdgeTimeLine = round(mergeArriveEdgeTimeLine, systemConfig.d);
+    mergeLeaveSrvTime = round(mergeLeaveSrvTime.*frequencyRatio, systemConfig.d);
+    mergeWirelessTrDelay = round(mergeWirelessTrDelay, systemConfig.d);
+    if isempty(mergeArriveEdgeTimeLine) %没有卸载的任务，就按空处理
+        leaveInfo = struct(...
+        'arriveEdgeTimeLine', {},...
+        'offloadedSrvTime', {},...
+        'wirelessTrDelay', {}...
+        );
+    else %有卸载的任务，就正常处理
+        leaveInfo = struct(...
+        'arriveEdgeTimeLine', mat2cell(mergeArriveEdgeTimeLine, [1], ones(1, length(mergeArriveEdgeTimeLine))),... 
+        'offloadedSrvTime', mat2cell(mergeLeaveSrvTime, [1], ones(1, length(mergeLeaveSrvTime))),...
+        'wirelessTrDelay', mat2cell(mergeWirelessTrDelay, [1],  ones(1, length(mergeWirelessTrDelay)))...
+        );    
+    end
+    [temp, index] = sort([leaveInfo.arriveEdgeTimeLine]);
+    offloadedTasksFromDevice = leaveInfo(index);
+end
