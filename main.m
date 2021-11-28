@@ -1,44 +1,23 @@
 clear all;close all;clc;
-%任务情况
-systemConfig.taskSize = 1*10e6; % 1M bits
-systemConfig.taskComputationIntensityPerBit = 5; % 10cycles
-%设备情况
-systemConfig.deviceCPUFrequency = 200*10e6; % 200MHz
-systemConfig.deviceNum = 49;% 设备个数
-systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*10; %设备上的任务到达率
-%边缘服务器情况
-systemConfig.edgeCPUFrequency = 1*10e9; % 2GHz
-systemConfig.edgeNum = 3; %边缘服务器的个数; 
-% 云服务器情况
-systemConfig.cloudCPUFrequency = 10*10e9; %10GHz
-%无线信道配置
-% systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益
-systemConfig.wireless.wireless_gains = raylrnd(ones(1, systemConfig.deviceNum)); %各个设备与边缘节点的无线信道的信道增益
-systemConfig.wireless.noisePower = 1e-2; %背景噪声功率 10e-2W
-systemConfig.wireless.transmissionPower = 1; %传输功率 1W
-systemConfig.wireless.bandWidth = 1*10e6; %带宽1MHz
-%有线信道配置
-systemConfig.wired.bandWidth = 200*10e6; %带宽10Mbps
-systemConfig.wired.metric = 20; %边缘服务器距离云服务的跳数，有10跳
-%时间精度
-systemConfig.d = 4;
 
-[bestCapacity, FR] = getStrategy(systemConfig);
+setSystemConfig();
+[bestCapacity, FR] = getStrategy();
 % 设备层仿真
-deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1), systemConfig);
+deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
 % 对设备层仿真得到的结果进行处理
-offloadedTasksFromDevice = formatDeviceLeaveInfo(deviceResultArr, systemConfig);
+offloadedTasksFromDevice = formatDeviceLeaveInfo(deviceResultArr);
 % 边缘节点层进行仿真
-edgeResultArr = edgeSimulation(bestCapacity(1, end), systemConfig, offloadedTasksFromDevice);
+edgeResultArr = edgeSimulation(bestCapacity(1, end), offloadedTasksFromDevice);
 % 对边缘节点仿真得到的结果进行处理
-offloadedTasksFromEdge = formatEdgeLeaveInfo(edgeResultArr, systemConfig);
+offloadedTasksFromEdge = formatEdgeLeaveInfo(edgeResultArr);
 % 云节点层进行仿真
 cloudResultArr = cloudSimulation(offloadedTasksFromEdge);
 % 计算平均完成时延
 [averageCompletionTime, p_off_device, p_off_edge] = getAverageCompletionTime([deviceResultArr.arrTotalSysTime], edgeResultArr.arrTotalSysTime, cloudResultArr.arrTotalSysTime);
 disp(['The simulation result is ', num2str(averageCompletionTime)]);
 % 设备层仿真
-function [deviceResultArr] = deviceSimulation(deviceCapacityArr, systemConfig)
+function [deviceResultArr] = deviceSimulation(deviceCapacityArr)
+    global systemConfig;
     qs = @queuesimulation;
     deviceResultArr = struct([]);
     deviceConfigInfo.type = 1;
@@ -73,7 +52,8 @@ function [deviceResultArr] = deviceSimulation(deviceCapacityArr, systemConfig)
 end
 
 % 边缘节点层仿真
-function [edgeResultArr] = edgeSimulation(edgeCapacity, systemConfig, offloadedTasksFromDevice)
+function [edgeResultArr] = edgeSimulation(edgeCapacity, offloadedTasksFromDevice)
+    global systemConfig;
     qs = @queuesimulation;
     edgeConfigInfo.type = 2;
     edgeConfigInfo.edgeNum = systemConfig.edgeNum;
@@ -98,19 +78,12 @@ function [cloudResultArr] = cloudSimulation(offloadedTasksFromEdge)
     cloudResultArr = qs(cloudConfigInfo);
 end
 % 对设备层所有设备输出的任务进行处理
-function[offloadedTasksFromDevice] = formatDeviceLeaveInfo(deviceResultArr, systemConfig)
+function[offloadedTasksFromDevice] = formatDeviceLeaveInfo(deviceResultArr)
+    global systemConfig;
     frequencyRatio = systemConfig.deviceCPUFrequency./systemConfig.edgeCPUFrequency;
     mergeArriveEdgeTimeLine = [deviceResultArr.arriveEdgeTimeline];
     mergeLeaveSrvTime = [deviceResultArr.offloadedSrvTime];
     mergeWirelessTrDelay = [deviceResultArr.wirelessTrDelay];
-%     mergeArriveEdgeTimeLine = [];
-%     mergeLeaveSrvTime = [];
-%     mergeWirelessTrDelay = [];
-%     for i = 1:1:length(deviceResultArr)
-%         mergeArriveEdgeTimeLine = [mergeArriveEdgeTimeLine, deviceResultArr(i).arriveEdgeTimeline];
-%         mergeLeaveSrvTime = [mergeLeaveSrvTime, deviceResultArr(i).offloadedSrvTime];
-%         mergeWirelessTrDelay = [mergeWirelessTrDelay, deviceResultArr(i).wirelessTrDelay];
-%     end
     mergeArriveEdgeTimeLine = round(mergeArriveEdgeTimeLine, systemConfig.d);
     mergeLeaveSrvTime = round(mergeLeaveSrvTime.*frequencyRatio, systemConfig.d);
     mergeWirelessTrDelay = round(mergeWirelessTrDelay, systemConfig.d);
@@ -132,7 +105,8 @@ function[offloadedTasksFromDevice] = formatDeviceLeaveInfo(deviceResultArr, syst
 end
 
 % 对边缘层所有设备输出的任务进行处理
-function[offloadedTasksFromEdge] = formatEdgeLeaveInfo(edgeResultArr, systemConfig)
+function[offloadedTasksFromEdge] = formatEdgeLeaveInfo(edgeResultArr)
+    global systemConfig;
     frequencyRatio = systemConfig.edgeCPUFrequency./systemConfig.cloudCPUFrequency;
     arriveCloudTimeLine = edgeResultArr.leaveTimeLine;
     offloadedSrvTime = round(edgeResultArr.offloadedSrvTime.*frequencyRatio, systemConfig.d);

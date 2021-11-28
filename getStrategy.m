@@ -1,7 +1,8 @@
 % wireless_gains：%各个设备与边缘节点的无线信道的信道增益
 % c_Edge：边缘服务器的个数
 % deviceNum：设备个数
-function [xmin, FR] = getStrategy(systemConfig)
+function [xmin, FR] = getStrategy()
+    global systemConfig;
     fitfun = @fitnessfun;
     deviceNum = systemConfig.deviceNum;
     dim = deviceNum + 1; % 维度，设备个数加上一个边缘节点的个数
@@ -11,7 +12,7 @@ function [xmin, FR] = getStrategy(systemConfig)
     Lb=[ones(1, deviceNum) edgeNum];
     Ub=[ones(1, deviceNum)*100 100];
     N=10; %种群大小
-    [xmin,fmin,CNVG, historyXpreys, FR]=HBA(fitfun,dim,Lb,Ub,T,N,systemConfig);
+    [xmin,fmin,CNVG, historyXpreys, FR]=HBA(fitfun,dim,Lb,Ub,T,N);
     figure,
     semilogy(CNVG,'r')
     xlim([0 T]);

@@ -1,5 +1,6 @@
 %% 适应度函数表达式
-function [fitness, fitnessRecord] = fitnessfun(capacity, systemConfig)
+function [fitness, fitnessRecord] = fitnessfun(capacity)
+    global systemConfig;
     % 初始化
     % 任务
     taskSize = systemConfig.taskSize;

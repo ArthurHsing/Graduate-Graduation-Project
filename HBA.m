@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %Xprey是全局最优解得位置，Food_Score是全局最优解，CNVG是每次迭代的最优解
-function [Xprey, Food_Score,CNVG, historyXpreys, FR] = HBA(objfunc, dim,lb,ub,tmax,N,systemConfig)
+function [Xprey, Food_Score,CNVG, historyXpreys, FR] = HBA(objfunc, dim,lb,ub,tmax,N)
 beta       = 2;     % the ability of HB to get the food  Eq.(4)
 C       = 1;     %constant in Eq. (3)
 vec_flag=[1,-1];
@@ -16,7 +16,7 @@ vec_flag=[1,-1];
 X=initialization(N,dim,ub,lb);
 % disp(X);
 %Evaluation
-[fitness, FR]= fun_calcobjfunc(objfunc, X, systemConfig);
+[fitness, FR]= fun_calcobjfunc(objfunc, X);
 % disp(fitness);
 [GYbest, gbest] = min(fitness);
 Xprey = X(gbest,:);
@@ -53,7 +53,7 @@ for t = 1:tmax
         FU=Xnew(i,:)>ub;
         FL=Xnew(i,:)<lb;
         Xnew(i,:)=floor((Xnew(i,:).*(~(FU+FL)))+ub.*FU+lb.*FL); %边界值判断，如果超过了边界值就取边界值，如果没有超过，就取原来的值
-        [tempFitness, tempFR] = fun_calcobjfunc(objfunc, Xnew(i,:), systemConfig); %当前个体的适应值
+        [tempFitness, tempFR] = fun_calcobjfunc(objfunc, Xnew(i,:)); %当前个体的适应值
         if tempFitness<fitness(i) %fitness(i)是当前个体的历史最优值
             fitness(i)=tempFitness; %更新最优值
             FR(i) = tempFR;
@@ -75,11 +75,11 @@ end
 Food_Score = GYbest;
 end
 
-function [Y, FR] = fun_calcobjfunc(func, X, systemConfig)
+function [Y, FR] = fun_calcobjfunc(func, X)
 N = size(X,1);
 Y = zeros(1, N);
 for i = 1:N
-    [fitness, fitnessRecord] = func(X(i,:), systemConfig);
+    [fitness, fitnessRecord] = func(X(i,:));
     Y(i) = fitness;
     FR(i) = fitnessRecord;
 end
