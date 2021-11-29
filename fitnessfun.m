@@ -43,7 +43,7 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     for i = 1:1:deviceNum
         ar_Device = deviceArrivalRate(i); %设备上的任务到达率（处理方式待定，主要是想处理成每个设备上的任务到达率都不一样）
         [Ws_Device_Per, PN_Device] = PerDeviceWs(devicesCapacity(i), ar_Device, sr_Device);
-        [wirelessTTPer] = wirelessTTFun(taskSize, wireless, wireless_gains(i));
+        [wirelessTTPer] = wirelessTTFun(taskSize, wireless, i);
         if wirelessTTPer == inf
             disp('too big');
         end
@@ -74,6 +74,7 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     fitnessRecord.wireless_gains = wireless_gains;
     fitnessRecord.it_Edge = it_Edge;
     fitnessRecord.c_Edge = capacity(end);
+    fitnessRecord.fitness = fitness;
 end
 %% 每个设备上的逗留时间计算，函数封装
 %N_Device设备的容量，ar_Device设备上的任务到达率（待定）
@@ -99,7 +100,9 @@ function [Ws_Device, PN_Device] = PerDeviceWs(N_Device, ar_Device, sr_Device)
 %     end
 end
 %% 设备->边缘节点 无线信道上的传输时间
-function [wirelessTTPer] = wirelessTTFun(taskSize, wireless, gain)
+function [wirelessTTPer] = wirelessTTFun(taskSize, wireless, i)
+    global systemConfig; % 这个全局变量的引入，主要为了方便修改传输速率为负数的情况
+    gain = wireless.wireless_gains(i);
     np = wireless.noisePower;   % 噪声功率
     tp = wireless.transmissionPower; %传输功率
     bw = wireless.bandWidth; %带宽
@@ -107,12 +110,14 @@ function [wirelessTTPer] = wirelessTTFun(taskSize, wireless, gain)
 %     gain = 1;
     % 根据香农公式得到传输速率
     rate = bw*log2(gain*tp/np);
-    if rate <= 0
-        wirelessTTPer = +Inf;
-    else 
-        %得到任务在无线信道上的传输时延期望
-        wirelessTTPer = taskSize./rate;    
-    end
+    % 处理传输速率小于0的情况
+    while rate <= 0
+        systemConfig.wireless.wireless_gains(i) = raylrnd(1);
+        gain = wireless.wireless_gains(i);
+        rate = bw*log2(gain*tp/np);
+    end 
+    %得到任务在无线信道上的传输时延期望
+    wirelessTTPer = taskSize./rate;    
 %     if wirelessTTPer < 0
 %         disp('something wrong：wirelessTTPer');
 %     end

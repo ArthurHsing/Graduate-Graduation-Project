@@ -1,6 +1,7 @@
-function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
+function [averageCompletionTime] = mmssOffload()
+    global systemConfig;
     % 拿到策略
-    [bestCapacity, FR, FRBest] = getStrategy();
+    bestCapacity = [ones(1, systemConfig.deviceNum)];
     % 设备层仿真
     deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
     % 对设备层仿真得到的结果进行处理
@@ -15,3 +16,4 @@ function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
     [averageCompletionTime, p_off_device, p_off_edge] = getAverageCompletionTime([deviceResultArr.arrTotalSysTime], edgeResultArr.arrTotalSysTime, cloudResultArr.arrTotalSysTime);
     disp(['The simulation result is ', num2str(averageCompletionTime)]); 
 end
+

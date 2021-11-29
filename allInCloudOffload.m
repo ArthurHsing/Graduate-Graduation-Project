@@ -1,6 +1,7 @@
-function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
-    % 拿到策略
-    [bestCapacity, FR, FRBest] = getStrategy();
+function [averageCompletionTime] = allInCloudOffload()
+    global systemConfig;
+    % 设备层和边缘层的容量都为0
+    bestCapacity = [zeros(1, systemConfig.deviceNum).*1, 0];
     % 设备层仿真
     deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
     % 对设备层仿真得到的结果进行处理
@@ -14,4 +15,6 @@ function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
     % 计算平均完成时延
     [averageCompletionTime, p_off_device, p_off_edge] = getAverageCompletionTime([deviceResultArr.arrTotalSysTime], edgeResultArr.arrTotalSysTime, cloudResultArr.arrTotalSysTime);
     disp(['The simulation result is ', num2str(averageCompletionTime)]); 
+    disp(['p_off_device ', num2str(p_off_device)]);
+    disp(['p_off_edge ', num2str(p_off_edge)]);
 end

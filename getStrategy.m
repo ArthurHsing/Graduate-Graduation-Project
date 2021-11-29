@@ -1,7 +1,7 @@
 % wireless_gains：%各个设备与边缘节点的无线信道的信道增益
 % c_Edge：边缘服务器的个数
 % deviceNum：设备个数
-function [xmin, FR] = getStrategy()
+function [xmin, FR, FRBest] = getStrategy()
     global systemConfig;
     fitfun = @fitnessfun;
     deviceNum = systemConfig.deviceNum;
@@ -12,14 +12,14 @@ function [xmin, FR] = getStrategy()
     Lb=[ones(1, deviceNum) edgeNum];
     Ub=[ones(1, deviceNum)*100 100];
     N=10; %种群大小
-    [xmin,fmin,CNVG, FR]=HBA(fitfun,dim,Lb,Ub,T,N);
-    figure,
-    semilogy(CNVG,'r')
-    xlim([0 T]);
-    title('Convergence curve')
-    xlabel('Iteration');
-    ylabel('Best fitness obtained so far');
-    legend('HBA')
+    [xmin,fmin,CNVG, FR, FRBest]=HBA(fitfun,dim,Lb,Ub,T,N);
+%     figure,
+%     semilogy(CNVG,'r')
+%     xlim([0 T]);
+%     title('Convergence curve')
+%     xlabel('Iteration');
+%     ylabel('Best fitness obtained so far');
+%     legend('HBA')
 
     display(['The best location= ', num2str(xmin)]);
     display(['The best fitness score = ', num2str(fmin)]);

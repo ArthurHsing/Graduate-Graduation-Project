@@ -109,11 +109,9 @@ while i < ceil(arrTimeline(end)) || i == ceil(arrTimeline(end))
         state = state + 1;
         % 拿到当前较为空闲的服务器
         [minVal, minIndex] = min(server);
-        % 随机卸载策略
-        isRandomOffload = k < 0 && rand < 0.5;
-        % 随机卸载，或者按系统容量来卸载
+        isRandomOffload = k < 0 && rand
         % 如果当前系统中任务的个数大于了系统的容量，这个任务就直接被卸载到上层节点去了
-        if(isRandomOffload || (~(k < 0) && state>k))
+        if(state>k)
 %             disp(state);
             state = state - 1;
             % 任务排队的时间为无穷大

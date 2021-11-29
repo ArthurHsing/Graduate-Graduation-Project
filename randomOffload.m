@@ -1,6 +1,7 @@
-function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
-    % 拿到策略
-    [bestCapacity, FR, FRBest] = getStrategy();
+function [averageCompletionTime, p_off_device, p_off_edge, FR] = randomOffload()
+    global systemConfig;
+    % 设备层和边缘层的容量都为-1，代表随机卸载
+    bestCapacity = [ones(1, systemConfig.deviceNum).*(-1), -1];
     % 设备层仿真
     deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
     % 对设备层仿真得到的结果进行处理

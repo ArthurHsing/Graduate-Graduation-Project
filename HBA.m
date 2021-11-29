@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %Xprey是全局最优解得位置，Food_Score是全局最优解，CNVG是每次迭代的最优解
-function [Xprey, Food_Score,CNVG, FR] = HBA(objfunc, dim,lb,ub,tmax,N)
+function [Xprey, Food_Score,CNVG, FR, FRBest] = HBA(objfunc, dim,lb,ub,tmax,N)
 beta       = 2;     % the ability of HB to get the food  Eq.(4)
 C       = 1;     %constant in Eq. (3)
 vec_flag=[1,-1];
@@ -20,6 +20,7 @@ X=initialization(N,dim,ub,lb);
 % disp(fitness);
 [GYbest, gbest] = min(fitness);
 Xprey = X(gbest,:);
+FRBest = FR(gbest);
 historyXpreys(1, :) = Xprey;
 CNVG = zeros(1, tmax);
 for t = 1:tmax
@@ -68,6 +69,7 @@ for t = 1:tmax
     if Ybest<GYbest %用当前的最优值去更新全局的最优值
         GYbest=Ybest;
         Xprey = X(index,:);
+        FRBest = FR(index);
     end
     historyXpreys(t + 1, :) = Xprey;
 end
