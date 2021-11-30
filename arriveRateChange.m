@@ -16,7 +16,7 @@ function [result] = arriveRateChange()
     avrTime_RandomOffload = [];
     avrTime_MmssOffload = [];
     % 任务到达率的变化,从1变到30
-    for ar = 1:maxAr
+    for ar = 28:maxAr
         ar
         systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*ar; %设备上的任务到达率
         % 策略卸载
