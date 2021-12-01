@@ -2,11 +2,11 @@ function [r] = setSystemConfig()
     global systemConfig;
     %任务情况
     systemConfig.taskSize = 1*10e6; % 1M bits
-    systemConfig.taskComputationIntensityPerBit = 8; % 10cycles
+    systemConfig.taskComputationIntensityPerBit = 10; % 10cycles
     %设备情况
     systemConfig.deviceCPUFrequency = 200*10e6; % 200MHz
-    systemConfig.deviceNum = 20;% 设备个数
-    systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*10; %设备上的任务到达率
+    systemConfig.deviceNum = 30;% 设备个数
+    systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*12; %设备上的任务到达率
     %边缘服务器情况
     systemConfig.edgeCPUFrequency = 1*10e9; % 2GHz
     systemConfig.edgeNum = 3; %边缘服务器的个数; 

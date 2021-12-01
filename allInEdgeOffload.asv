@@ -4,7 +4,7 @@ function [averageCompletionTime, wireLessDelay] = allInEdgeOffload()
     bestCapacity = [zeros(1, systemConfig.deviceNum), inf];
     % 设备层仿真
     deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
-    wireLessDelay = mean([deviceResultArr.wirelessTrDelay]);
+    wireLessDelay = mean(deviceResultArr.);
     % 对设备层仿真得到的结果进行处理
     offloadedTasksFromDevice = formatDeviceLeaveInfo(deviceResultArr);
     % 边缘节点层进行仿真

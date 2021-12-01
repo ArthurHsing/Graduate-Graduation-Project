@@ -49,7 +49,7 @@ if configInfo.type == 3
     arrTimeline = [configInfo.offloadedTasksFromEdge.arriveCloudTimeLine]; %卸载到云节点的各任务的到达时间
     arrSrvTime = [configInfo.offloadedTasksFromEdge.offloadedSrvTime]; %卸载到云节点的各任务的服务时间    
     wirelessTrDelay = [configInfo.offloadedTasksFromEdge.wirelessTrDelay]; %各任务从设备层卸载到边缘节点层的无线信道传输时延
-    wiredTrDelay = [configInfo.offloadedTasksFromEdge.wiredTrDelay]; %各任务从设备层卸载到边缘节点层的无线信道传输时延
+    wiredTrDelay = [configInfo.offloadedTasksFromEdge.wiredTrDelay]; %各任务从边缘层卸载到云节点层的有线信道传输时延
 end
 
 if isempty(arrTimeline) %没有任务的情况，直接返回空就可以了
