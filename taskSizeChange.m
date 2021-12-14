@@ -2,7 +2,7 @@ function [result] = arriveRateChange()
     global systemConfig;
     % 各个设备与边缘节点的无线信道的信道增益，这里设为无增益，都为1
     systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum);
-    maxAr = 3;
+    maxAr = 2;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];
@@ -14,9 +14,13 @@ function [result] = arriveRateChange()
     avrTime_AllInCloudOffload = [];
     avrTime_RandomOffload = [];
     avrTime_MmssOffload = [];
-    % 任务到达率的变化,从1变到30
-    for ar = 0.1:0.1:maxAr
-        systemConfig.taskSize = ar.*10e6; %设备上的任务到达率
+    % 任务体积的变化，从0.2M到2M
+    for ar = 0.2:0.2:maxAr
+        systemConfig.taskSize = ar.*10e6; %任务体积的变化
+        %每次改变体积，都需要重新生成任务
+        [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
+        systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
+        systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
         % 策略卸载
         [averageCompletionTime_MyOffload, p_off_device, p_off_edge, FRBest] = myOffload();
         avrTime_MyOffload(end + 1) = averageCompletionTime_MyOffload;

@@ -1,11 +1,11 @@
-function [] = arriveRateChange_draw(changeRateResult)
+function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     figure(1);
-    avrTime_Real_myOffload = round([changeRateResult.avrTime.myOffload].*1000);
-    avrTime_Real_mmssOffload = round([changeRateResult.avrTime.mmssOffload].*1000);
-    avrTime_Real_randomOffload = round([changeRateResult.avrTime.randomOffload].*1000);
-    avrTime_Real_allInDeviceOffload = round([changeRateResult.avrTime.allInDeviceOffload].*1000);
-    avrTime_Real_allInEdgeOffload = round([changeRateResult.avrTime.allInEdgeOffload].*1000);
-    avrTime_Real_allInCloudOffload = round([changeRateResult.avrTime.allInCloudOffload].*1000);
+    avrTime_Real_myOffload = round([wirelessChannelChangeResult.avrTime.myOffload].*1000);
+    avrTime_Real_mmssOffload = round([wirelessChannelChangeResult.avrTime.mmssOffload].*1000);
+    avrTime_Real_randomOffload = round([wirelessChannelChangeResult.avrTime.randomOffload].*1000);
+    avrTime_Real_allInDeviceOffload = round([wirelessChannelChangeResult.avrTime.allInDeviceOffload].*1000);
+    avrTime_Real_allInEdgeOffload = round([wirelessChannelChangeResult.avrTime.allInEdgeOffload].*1000);
+    avrTime_Real_allInCloudOffload = round([wirelessChannelChangeResult.avrTime.allInCloudOffload].*1000);
     Xlength = length(avrTime_Real_myOffload);
     Ylength = max([
         avrTime_Real_myOffload,...
@@ -40,7 +40,7 @@ function [] = arriveRateChange_draw(changeRateResult)
 
     figure(2);
     avrTime_Real_myOffload;
-    avrTime_Theory_myOffload = round([changeRateResult.myOffloadTheoryData.avrTime].*1000);
+    avrTime_Theory_myOffload = round([wirelessChannelChangeResult.myOffloadTheoryData.avrTime].*1000);
     Xlength;
     Ylength = max([...
         avrTime_Real_myOffload,...
@@ -64,10 +64,10 @@ function [] = arriveRateChange_draw(changeRateResult)
     hold on;
 
     figure(3);
-    pOffDevice_Real = round([changeRateResult.myOffloadSimulationData.pOffDevice], 3);
-    pOffDevice_Theory = round([changeRateResult.myOffloadTheoryData.pOffDevice], 3);
-    XLength = 100;
-    YLength = Ylength;
+    pOffDevice_Real = round([wirelessChannelChangeResult.myOffloadSimulationData.pOffDevice], 3);
+    pOffDevice_Theory = round([wirelessChannelChangeResult.myOffloadTheoryData.pOffDevice], 3);
+    Xlength;
+    Ylength = Ylength;
     RT_Compare_X;
     plot(...
     RT_Compare_X,pOffDevice_Real,'-*r',...
@@ -84,10 +84,10 @@ function [] = arriveRateChange_draw(changeRateResult)
     ylabel('设备的任务卸载率') %y轴坐标描述
 
     figure(4);
-    pOffEdge_Real = round([changeRateResult.myOffloadSimulationData.pOffEdge], 3);
-    pOffEdge_Theory = round([changeRateResult.myOffloadTheoryData.pOffEdge], 3);
-    XLength = 100;
-    YLength = Ylength;
+    pOffEdge_Real = round([wirelessChannelChangeResult.myOffloadSimulationData.pOffEdge], 3);
+    pOffEdge_Theory = round([wirelessChannelChangeResult.myOffloadTheoryData.pOffEdge], 3);
+    Xlength;
+    Ylength = Ylength;
     RT_Compare_X;
     plot(...
     RT_Compare_X,pOffEdge_Real,'-*r',...
@@ -102,4 +102,16 @@ function [] = arriveRateChange_draw(changeRateResult)
     );   %右上角标注
     xlabel('时间（帧）')  %x轴坐标描述
     ylabel('边缘节点的任务卸载率') %y轴坐标描述
+    
+    figure(5);
+    avrWirelessChannelRate = (wirelessChannelChangeResult.avrWirelessChannelRate)./10e6;
+    Xlength;
+    Ylength = 20;
+    plot(...
+    RT_Compare_X,avrWirelessChannelRate,'-*r'...
+    ); %线性，颜色，标记
+    set(gca,'XTick',[0:1:(Xlength + 1)]) %x轴范围1-6，间隔1
+    set(gca,'YTick',[6:0.2:10]) %y轴范围0-700，间隔100
+    xlabel('时间（帧）')  %x轴坐标描述
+    ylabel('无线信道平均传输速率（Mbit）') %y轴坐标描述
 end

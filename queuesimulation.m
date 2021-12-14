@@ -19,19 +19,11 @@ concurrence = 0; %是否并发
 % rho = lambda/mu;
 % type，1：设备，2：边缘节点，3：云节点
 if configInfo.type == 1
-    noArr = 20; %一共有多少个任务
     m = 1;%服务器数量
     k = configInfo.systemCapacity;%系统容量
-    taskSize = configInfo.taskSize;%任务大小
-    CPUFrequency = configInfo.CPUFrequency;%CPU频率
-    computationIntensityPerBit = configInfo.computationIntensityPerBit;%任务的服务强度
-    computationIntensity = taskSize*computationIntensityPerBit;%每个任务需要的总的计算强度
-    mu = CPUFrequency/computationIntensity; %服务率
-    lambda = configInfo.arrivalRate; %任务到达率
-    
-    arrTimes = round((exprnd((1/lambda),1,noArr)+(10^-d)),d);%noArr个任务的到达时间间隔
+    arrTimes = configInfo.arrTimes;%任务的到达时间间隔
     arrTimeline = cumsum(arrTimes);%加起来就是noArr个任务分别的到达时间线
-    arrSrvTime = round((exprnd((1/mu),1,noArr)+(10^-d)),d);%noArr个任务的服务时间
+    arrSrvTime = configInfo.arrSrvTime;%noArr个任务的服务时间
 end
 
 if configInfo.type == 2

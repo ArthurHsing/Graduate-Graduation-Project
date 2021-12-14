@@ -4,15 +4,13 @@ function [deviceResultArr] = deviceSimulation(deviceCapacityArr)
     qs = @queuesimulation;
     deviceResultArr = struct([]);
     deviceConfigInfo.type = 1;
-    deviceConfigInfo.taskSize = systemConfig.taskSize;
-    deviceConfigInfo.CPUFrequency = systemConfig.deviceCPUFrequency;
-    deviceConfigInfo.computationIntensityPerBit = systemConfig.taskComputationIntensityPerBit;
     bw = systemConfig.wireless.bandWidth;
     np = systemConfig.wireless.noisePower;
     tp = systemConfig.wireless.transmissionPower;
     for i=1:1:length(deviceCapacityArr)
         deviceConfigInfo.systemCapacity = deviceCapacityArr(i);
-        deviceConfigInfo.arrivalRate = systemConfig.deviceArrivalRate(i);
+        deviceConfigInfo.arrTimes = systemConfig.arrTimesAll(i, :);
+        deviceConfigInfo.arrSrvTime = systemConfig.arrSrvTimeAll(i, :);
         deviceResult = qs(deviceConfigInfo);
         % 卸载的任务离开设备的时间
         deviceResultArr(end + 1).leaveTimeLine = deviceResult.leaveTimeLine;

@@ -15,10 +15,17 @@ function [result] = wirelessChannelChange()
     avrTime_RandomOffload = [];
     avrTime_MmssOffload = [];
     wlDelay_AllInEdgeOffload = [];
+    avrWirelessChannelRate = [];
     % 做20次实验，信道变化20次
     for ar = 1:maxAr
-    systemConfig.wireless.wireless_gains = raylrnd(ones(...
-        systemConfig.wireless.wireless_gain_parameter, systemConfig.deviceNum)); %各个设备与边缘节点的无线信道的信道增益        % 策略卸载
+        systemConfig.wireless.wireless_gains = raylrnd(ones(...
+            systemConfig.wireless.wireless_gain_parameter, systemConfig.deviceNum)); %各个设备与边缘节点的无线信道的信道增益
+        avrWirelessChannelRate(end + 1) = getAverageWirelessChannelRate();
+        %设置每个帧的任务都不一样
+%         [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
+%         systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
+%         systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
+        % 策略卸载
         [averageCompletionTime_MyOffload, p_off_device, p_off_edge, FRBest] = myOffload();
         avrTime_MyOffload(end + 1) = averageCompletionTime_MyOffload;
         pOffDevice_MyOffload(end + 1) = p_off_device;
@@ -74,6 +81,8 @@ function [result] = wirelessChannelChange()
         'myOffloadTheoryData',...
         myOffloadTheoryData,...
         'allInEdgeData',...
-        allInEdgeData...
+        allInEdgeData,...
+        'avrWirelessChannelRate',...
+        avrWirelessChannelRate...
     );
 end
