@@ -9,8 +9,8 @@
 %
 %Xprey是全局最优解得位置，Food_Score是全局最优解，CNVG是每次迭代的最优解
 function [Xprey, Food_Score,CNVG, FR, FRBest] = HBA(objfunc, dim,lb,ub,tmax,N)
-beta       = 2;     % the ability of HB to get the food  Eq.(4)
-C       = 1;     %constant in Eq. (3)
+beta       = 6;     % the ability of HB to get the food  Eq.(4)，取值范围是大于等于1，默认是6
+C       = 2;     %constant in Eq. (3)取值范围是大于等于1，默认是2
 vec_flag=[1,-1];
 %initialization
 X=initialization(N,dim,ub,lb);
@@ -36,6 +36,7 @@ for t = 1:tmax
 %             if t > tmax/2
                 r3=rand;                r4=rand;                r5=rand;
                 temp11 = Xprey(j);
+%                 temp11 = alpha*Xprey(j);
                 temp12 = F*beta*I(i)* Xprey(j);
                 temp13 = F*r3*alpha*(di)*abs(cos(2*pi*r4)*(1-cos(2*pi*r5)));
                 temp1 = temp11 + temp12 + temp13;
@@ -45,6 +46,7 @@ for t = 1:tmax
             else
                 r7=rand;
                 temp21 = Xprey(j);
+%                 temp21 = alpha*Xprey(j);
                 temp22 = F*r7*alpha*di;
                 temp2 = temp21 + temp22;
 %                 fprintf('temp2 is %d\n',temp2);
@@ -99,11 +101,11 @@ S(N)=( norm((X(N,:)-X(1,:)+eps))).^2;
 I = zeros(1, N);
 for i=1:N
     r2=rand;
-    if di(i)-0 < 1e-1
-        I(i) = 0;
-    else
+%     if di(i)-0 < 1e-1
+%         I(i) = 0;
+%     else
         I(i)=r2*S(i)/(4*pi*di(i));
-    end
+%     end
 end
 end
 function [X]=initialization(N,dim,up,down)
