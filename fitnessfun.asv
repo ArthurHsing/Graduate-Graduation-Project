@@ -66,11 +66,8 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     % 云节点上的逗留时间计算
     [Ws_Cloud] =  CloudWs(ar_Edge, PN_Edge, sr_Cloud, PN_Devices_average);
     
-    finishTimePerDevice = finishTimePerDevice + (offloadNum_PerDevice ./ (ar_Edge./deviceNum)).*(Ws_Edge + wiredTT + Ws_Cloud);
-    Ws_Std = std(finishTimePerDevice); %计算每个设备任务完成时延的标准差
-    % 适应度函数即总的逗留时间计算 + 
-    finishTime = Ws_Device + Ws_Edge + Ws_Cloud + wirelessTT + wiredTT;
-    fitness = systemConfig.alpha .* finishTime + systemConfig.beta .* Ws_Std;
+    % 适应度函数即总的逗留时间计算
+    fitness = Ws_Device + Ws_Edge + Ws_Cloud + wirelessTT + wiredTT;
     fitnessRecord.Ws_Device = Ws_Device;
     fitnessRecord.Ws_Edge = Ws_Edge;
     fitnessRecord.Ws_Cloud = Ws_Cloud;
@@ -85,7 +82,6 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     fitnessRecord.it_Edge = it_Edge;
     fitnessRecord.c_Edge = capacity(end);
     fitnessRecord.fitness = fitness;
-    fitnessRecord.finishTime = finishTime;
 end
 %% 每个设备上的逗留时间计算，函数封装
 %N_Device设备的容量，ar_Device设备上的任务到达率（待定）

@@ -1,7 +1,10 @@
 clear all;close all;clc;
 setSystemConfig();
 
-getStrategy();
+for i = 1:1:10
+    getStrategy();
+end
+
 
 % global systemConfig;
 % systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益

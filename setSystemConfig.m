@@ -1,10 +1,15 @@
 function [r] = setSystemConfig()
     global systemConfig;
+    %模型每一部分的比例
+    systemConfig.alpha = 0.6; %时延的影响因子
+    systemConfig.beta = 0.4; %方差的影响因子
+%     systemConfig.alpha = 1; %时延的影响因子
+%     systemConfig.beta = 0; %方差的影响因子
     %时间精度
     systemConfig.d = 4;
     %任务情况
-    systemConfig.taskSize = 1*10e6; % 1M bits
-    systemConfig.taskComputationIntensityPerBit = 10; % 10cycles
+    systemConfig.taskSize = 3*10e6; % 1M bits
+    systemConfig.taskComputationIntensityPerBit = 4; % 10cycles
     systemConfig.noArr = 20; %任务个数
     %设备情况
     systemConfig.deviceCPUFrequency = 200*10e6; % 200MHz

@@ -10,11 +10,12 @@ function [xmin, FR, FRBest] = getStrategy()
     T= 50; %迭代次数
     % 边缘节点排队系统容量的最小值 应当大于或等于 边缘服务器的个数，所以将搜索范围的最小值作为边缘服务器的个数
     Lb=[ones(1, deviceNum) edgeNum];
-    Ub=[ones(1, deviceNum)*20 300];
+    Ub=[ones(1, deviceNum)*20 100];
     N=10; %种群大小
-    [xmin,fmin,CNVG, FR, FRBest]=HBA(fitfun,dim,Lb,Ub,T,N);
+    [xmin,fmin,CNVG, FR, FRBest, CNVG_Subtract_STD]=HBA(fitfun,dim,Lb,Ub,T,N);
     figure,
-    semilogy(CNVG,'r')
+%     semilogy(CNVG,'r')
+    semilogy(CNVG_Subtract_STD,'r') %要减去标准差的图
     xlim([0 T]);
     title('Convergence curve')
     xlabel('Iteration');
@@ -22,6 +23,7 @@ function [xmin, FR, FRBest] = getStrategy()
     legend('HBA')
 
     display(['The best location= ', num2str(xmin)]);
-    display(['The best fitness score = ', num2str(fmin)]);
+%     display(['The best fitness score = ', num2str(fmin)]);
+    display(['The best fitness score = ', num2str(FRBest.finishTime)]);
 end
 

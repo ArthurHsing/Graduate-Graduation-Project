@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %Xprey是全局最优解得位置，Food_Score是全局最优解，CNVG是每次迭代的最优解
-function [Xprey, Food_Score,CNVG, FR, FRBest] = HBA(objfunc, dim,lb,ub,tmax,N)
+function [Xprey, Food_Score,CNVG, FR, FRBest, CNVG_Subtract_STD] = HBA(objfunc, dim,lb,ub,tmax,N)
 beta       = 6;     % the ability of HB to get the food  Eq.(4)，取值范围是大于等于1，默认是6
 C       = 2;     %constant in Eq. (3)取值范围是大于等于1，默认是2
 vec_flag=[1,-1];
@@ -23,6 +23,7 @@ Xprey = X(gbest,:);
 FRBest = FR(gbest);
 historyXpreys(1, :) = Xprey;
 CNVG = zeros(1, tmax);
+CNVG_Subtract_STD = zeros(1, tmax);
 for t = 1:tmax
     alpha=C*exp(-t/tmax);   %density factor in Eq. (3)
     I=Intensity(N,Xprey,X); %intensity in Eq. (2)
@@ -68,6 +69,7 @@ for t = 1:tmax
     X=floor((X.*(~(FU+FL)))+ub.*FU+lb.*FL); %这里又在进行边界值处理，感觉没有必要
     [Ybest,index] = min(fitness); %当前迭代所有个体的最优值和下标
     CNVG(t)=min(Ybest); %保存当前迭代的最优值，这个min就用得很魔性，Ybest就是一个数而已
+    CNVG_Subtract_STD(t) = FR(index).finishTime;
     if Ybest<GYbest %用当前的最优值去更新全局的最优值
         GYbest=Ybest;
         Xprey = X(index,:);
