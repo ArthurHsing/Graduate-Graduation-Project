@@ -12,6 +12,6 @@ function [edgeResultArr] = edgeSimulation(edgeCapacity, offloadedTasksFromDevice
     %计算传输时延
     trDelay = (systemConfig.taskSize./bw).*metric;
     leaveTimeLine = edgeResultArr.leaveTimeLine;
-    edgeResultArr.leaveTimeLine = leaveTimeLine + trDelay;
+    edgeResultArr.leaveTimeLine = round(leaveTimeLine + trDelay, systemConfig.d);
     edgeResultArr.wiredTrDelay = ones(1, length(edgeResultArr.leaveTimeLine)).*trDelay;
 end

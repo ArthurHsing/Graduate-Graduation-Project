@@ -1,29 +1,37 @@
 function [result] = arriveRateChange()
     global systemConfig;
-    % 各个设备与边缘节点的无线信道的信道增益，这里设为无增益，都为1
-    systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum);
-    maxAr = 30;
-    X_ar = 1:1:maxAr;
+    maxAr = 50;
+%     X_ar = 1:1:maxAr;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];
     avrTimeTheory_MyOffload = [];
     pOffDeviceTheory_MyOffload = [];
     pOffEdgeTheory_MyOffload = [];
+    averageTime_Device_MyOffload = [];
+    averageTime_Edge_MyOffload = [];
+    averageTime_Cloud_MyOffload = [];
     avrTime_AllInDeviceOffload = [];
     avrTime_AllInEdgeOffload = [];
     avrTime_AllInCloudOffload = [];
     avrTime_RandomOffload = [];
     avrTime_MmssOffload = [];
+
     % 任务到达率的变化,从1变到30
-    for ar = 28:maxAr
-        ar
+    for ar = 5:5:maxAr
         systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*ar; %设备上的任务到达率
+        % 每次改变任务到达率都需要更改，queuesimulation函数里面的参数
+        [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
+        systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
+        systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
         % 策略卸载
-        [averageCompletionTime_MyOffload, p_off_device, p_off_edge, FRBest] = myOffload();
+        [averageCompletionTime_MyOffload, p_off_device, p_off_edge, FRBest, averageTime_Device, averageTime_Edge, averageTime_Cloud] = myOffload();
         avrTime_MyOffload(end + 1) = averageCompletionTime_MyOffload;
         pOffDevice_MyOffload(end + 1) = p_off_device;
         pOffEdge_MyOffload(end + 1) = p_off_edge;
+        averageTime_Device_MyOffload(end + 1) = averageTime_Device;
+        averageTime_Edge_MyOffload(end + 1) = averageTime_Edge;
+        averageTime_Cloud_MyOffload(end + 1) = averageTime_Cloud;
         
         avrTimeTheory_MyOffload(end + 1) = FRBest.fitness;
         pOffDeviceTheory_MyOffload(end + 1) = FRBest.PN_Devices_average;
@@ -55,7 +63,10 @@ function [result] = arriveRateChange()
     myOffloadSimulationData = struct(...
         'avrTime', mat2cell(avrTime_MyOffload, [1], ones(1, length(avrTime_MyOffload))),...
         'pOffDevice', mat2cell(pOffDevice_MyOffload, [1], ones(1, length(pOffDevice_MyOffload))),...
-        'pOffEdge', mat2cell(pOffEdge_MyOffload, [1], ones(1, length(pOffEdge_MyOffload)))...
+        'pOffEdge', mat2cell(pOffEdge_MyOffload, [1], ones(1, length(pOffEdge_MyOffload))),...
+        'avrTimeDevice', mat2cell(averageTime_Device_MyOffload, [1], ones(1, length(averageTime_Device_MyOffload))),...
+        'avrTimeEdge', mat2cell(averageTime_Edge_MyOffload, [1], ones(1, length(averageTime_Edge_MyOffload))),...
+        'avrTimeCloud', mat2cell(averageTime_Cloud_MyOffload, [1], ones(1, length(averageTime_Cloud_MyOffload)))...
     );
     myOffloadTheoryData = struct(...
         'avrTime', mat2cell(avrTimeTheory_MyOffload, [1], ones(1, length(avrTimeTheory_MyOffload))),...

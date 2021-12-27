@@ -12,6 +12,9 @@ function [deviceResultArr] = deviceSimulation(deviceCapacityArr)
         deviceConfigInfo.arrTimes = systemConfig.arrTimesAll(i, :);
         deviceConfigInfo.arrSrvTime = systemConfig.arrSrvTimeAll(i, :);
         deviceResult = qs(deviceConfigInfo);
+        if length(deviceResult.arrTotalSysTime) == 0
+            disp('debug')
+        end
         % 卸载的任务离开设备的时间
         deviceResultArr(end + 1).leaveTimeLine = deviceResult.leaveTimeLine;
         % 拿到信道增益
@@ -24,7 +27,7 @@ function [deviceResultArr] = deviceSimulation(deviceCapacityArr)
         deviceResultArr(end).wirelessTrDelay = ones(1, length(deviceResult.leaveTimeLine)).*trDelay;
         % 卸载的任务到达边缘节点的时间，要加上传输时延
 %         deviceResultArr(end).arriveEdgeTimeline = deviceResult.leaveTimeLine;
-        deviceResultArr(end).arriveEdgeTimeline = deviceResult.leaveTimeLine + trDelay;
+        deviceResultArr(end).arriveEdgeTimeline = round(deviceResult.leaveTimeLine + trDelay, systemConfig.d);
         %卸载的任务的服务时间
         deviceResultArr(end).offloadedSrvTime = deviceResult.offloadedSrvTime;
         %未卸载的任务在设备上的执行时间

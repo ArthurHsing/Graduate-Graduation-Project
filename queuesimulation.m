@@ -42,6 +42,9 @@ if configInfo.type == 3
     arrSrvTime = [configInfo.offloadedTasksFromEdge.offloadedSrvTime]; %卸载到云节点的各任务的服务时间    
     wirelessTrDelay = [configInfo.offloadedTasksFromEdge.wirelessTrDelay]; %各任务从设备层卸载到边缘节点层的无线信道传输时延
     wiredTrDelay = [configInfo.offloadedTasksFromEdge.wiredTrDelay]; %各任务从边缘层卸载到云节点层的有线信道传输时延
+    if length(arrTimeline) == 1000
+        disp('debug');
+    end
 end
 
 if isempty(arrTimeline) %没有任务的情况，直接返回空就可以了
@@ -93,7 +96,13 @@ while i < ceil(arrTimeline(end)) || i == ceil(arrTimeline(end))
     % 这里可以理解为当第iArr个任务已经到了，估计是因为浮点数不好做相等比较，所以这里用了一个tolerance误差来表示
     % 之前在JS中我也用过类似的表示方法
     isTaskArrived = abs(i-arrTimeline(iArr))<tolerance;
+    if configInfo.type == 3 && i > 0.33
+        disp('debug');
+    end
     if(isTaskArrived)
+        if configInfo.type == 3
+            disp('debug');
+        end
         % 当前任务的服务时间
         iArrSrvTime = arrSrvTime(iArr);
         %放在本地进行计算

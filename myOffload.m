@@ -1,4 +1,4 @@
-function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
+function [averageCompletionTime, p_off_device, p_off_edge, FRBest, averageTime_Device, averageTime_Edge, averageTime_Cloud] = myOffload()
     % 拿到策略
     [bestCapacity, FR, FRBest] = getStrategy();
     % 设备层仿真
@@ -12,6 +12,6 @@ function [averageCompletionTime, p_off_device, p_off_edge, FRBest] = myOffload()
     % 云节点层进行仿真
     cloudResultArr = cloudSimulation(offloadedTasksFromEdge);
     % 计算平均完成时延
-    [averageCompletionTime, p_off_device, p_off_edge] = getAverageCompletionTime([deviceResultArr.arrTotalSysTime], edgeResultArr.arrTotalSysTime, cloudResultArr.arrTotalSysTime);
+    [averageCompletionTime, p_off_device, p_off_edge, averageTime_Device, averageTime_Edge, averageTime_Cloud] = getAverageCompletionTime([deviceResultArr.arrTotalSysTime], edgeResultArr.arrTotalSysTime, cloudResultArr.arrTotalSysTime);
     disp(['The simulation result is ', num2str(averageCompletionTime)]); 
 end
