@@ -1,8 +1,6 @@
 function [result] = wirelessChannelChange()
     global systemConfig;
-    % 各个设备与边缘节点的无线信道的信道增益，这里设为无增益，都为1
-    systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum);
-    maxAr = 10;
+    maxAr = 1;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];

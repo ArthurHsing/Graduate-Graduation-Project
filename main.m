@@ -1,7 +1,8 @@
 clear all;close all;clc;
 setSystemConfig();
-
+global bestOffloadNumResult;
 global systemConfig;
+
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
 % [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
@@ -26,20 +27,29 @@ global systemConfig;
 % end
 
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率
-for n = 1:3
-    systemConfig.wireless.bandWidth = n*10e6; %带宽nMHz
-    % 做多次实验求平均——任务体积的变化
-    for j = 1:systemConfig.experimentTimes
-        changeTaskSizeResultArr(j).changeTaskSize = taskSizeChange(); %任务体积的改变
-    end
-    changeTaskSizeResult = getAverageOfSeveralExperimentTimes(changeTaskSizeResultArr);
-    % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
-    taskSizeChange_draw(changeTaskSizeResult, n, 0); %画图
+% for n = 1:3
+%     systemConfig.wireless.bandWidth = n*10e6; %带宽nMHz
+%     % 做多次实验求平均——任务体积的变化
+%     for j = 1:systemConfig.experimentTimes
+%         changeTaskSizeResultArr(j).changeTaskSize = taskSizeChange(); %任务体积的改变
+%     end
+%     changeTaskSizeResult = getAverageOfSeveralExperimentTimes(changeTaskSizeResultArr);
+%     % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
+%     taskSizeChange_draw(changeTaskSizeResult, n, 0); %画图
+% end
+
+result = 0;
+max = 100;
+for q = 1 : max
+        systemConfig.wireless.wireless_gains = raylrnd(ones(...
+            1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
+    getStrategy();
+    result = result + bestOffloadNumResult.finishTime .* (1/max);
 end
-
-
+disp(result);
 % [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
 % wirelessChannelChange_draw(wirelessChannelChangeResult); %画图
+% capacityResult = 
 
 % systemConfig.taskSize = (1*10e6).*(2);
 % myOffload();

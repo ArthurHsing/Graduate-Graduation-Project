@@ -3,6 +3,7 @@
 % deviceNum：设备个数
 function [xmin, FR, FRBest] = getStrategy()
     global systemConfig;
+    global bestOffloadNumResult;
     fitfun = @fitnessfun;
     deviceNum = systemConfig.deviceNum;
     dim = deviceNum + 1; % 维度，设备个数加上一个边缘节点的个数
@@ -13,15 +14,20 @@ function [xmin, FR, FRBest] = getStrategy()
     Ub=[ones(1, deviceNum)*20 100];
     N=10; %种群大小
     [xmin,fmin,CNVG, FR, FRBest, CNVG_Subtract_STD]=HBA(fitfun,dim,Lb,Ub,T,N);
+    
 %     figure,
 %     semilogy(CNVG,'r')
-%     semilogy(CNVG_Subtract_STD,'r') %要减去标准差的图
+% %     semilogy(CNVG_Subtract_STD,'r') %要减去标准差的图
 %     xlim([0 T]);
 %     title('Convergence curve')
 %     xlabel('Iteration');
 %     ylabel('Best fitness obtained so far');
 %     legend('HBA')
 
+    bestOffloadNumResult.bestCapacity = xmin;
+    bestOffloadNumResult.wireless_gains = systemConfig.wireless.wireless_gains;
+    bestOffloadNumResult.finishTime = FRBest.finishTime;
+    bestOffloadNumResult.FRBest = FRBest;
     display(['The best location= ', num2str(xmin)]);
 %     display(['The best fitness score = ', num2str(fmin)]);
     display(['The best fitness score = ', num2str(FRBest.finishTime)]);

@@ -99,7 +99,8 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
                 systemConfig.gamma .* wirelessTT + ...
                 systemConfig.delta .* correlation_delta + ...
                 systemConfig.epsilon .* correlation_epsilon + ...
-                systemConfig.zeta .* wiredTT;
+                systemConfig.zeta .* 
+            ;
 %         end
 %         spearmanCorrelation = 
 %         fitness = systemConfig.alpha .* finishTime + systemConfig.beta .* Ws_Std + systemConfig.gamma .* correlation;

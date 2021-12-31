@@ -8,12 +8,12 @@ function [r] = setSystemConfig()
         systemConfig.alpha = 0.6; %时延的影响因子
         systemConfig.beta = 0.4; %方差的影响因子
     else
-        systemConfig.alpha = 0.8; %时延的影响因子
+        systemConfig.alpha = 0.78; %时延的影响因子
         systemConfig.beta = 0; %方差的影响因子       
         systemConfig.gamma = 0.2; %单独把时延提取出来
-        systemConfig.delta = 0; %系统容量与传输时延的相关系数
-        systemConfig.epsilon = 0; %系统容量与任务在设备上的平均完成时延的相关系数
-        systemConfig.zeta = 0;
+%         systemConfig.delta = 0.01; %系统容量与传输时延的相关系数
+        systemConfig.epsilon = 0.02; %系统容量与任务在设备上的平均完成时延的相关系数
+
 %         systemConfig.alpha = 0.8; %时延的影响因子
 %         systemConfig.beta = 0; %方差的影响因子       
 %         systemConfig.gamma = 0.2; %单独把时延提取出来
