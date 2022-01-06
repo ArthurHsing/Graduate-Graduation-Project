@@ -39,14 +39,17 @@ global systemConfig;
 % end
 
 result = 0;
-max = 100;
+corr_Aver = 0;
+max = 10;
 for q = 1 : max
         systemConfig.wireless.wireless_gains = raylrnd(ones(...
             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
     getStrategy();
     result = result + bestOffloadNumResult.finishTime .* (1/max);
+    corr_Aver = corr_Aver + bestOffloadNumResult.FRBest.correlation_delta .* (1/max);
 end
 disp(result);
+disp(corr_Aver);
 % [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
 % wirelessChannelChange_draw(wirelessChannelChangeResult); %画图
 % capacityResult = 
@@ -71,7 +74,7 @@ function [average]  = getAverageOfSeveralExperimentTimes(allTimes)
             subResultFieldsCell = fieldnames(subResult);
             for k = 1:1:length(subResultFieldsCell)
                 subResultField = subResultFieldsCell{k};
-                curTimeValArr = [allTimes(i).(experimentType).(resultField).(subResultField)];
+                curTimeValArr = [allTimes(i).(experimentType).(resultField) .(subResultField)];
                 if i == 1
                     tempCell = num2cell(curTimeValArr./times);
                     [resultStruct(1).(resultField)(1:length(curTimeValArr)).(subResultField)] = deal(tempCell{:});

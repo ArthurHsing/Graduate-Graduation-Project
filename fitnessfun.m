@@ -89,8 +89,9 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
 %         correlation = correlationMatrix(1, 2);
 %         correlation = corr(1./devicesCapacity', wirelessTT_PerDevice', 'Type', 'Pearson');
         correlation_delta = corr(1./devicesCapacity', wirelessTT_PerDevice', 'Type', 'Spearman');
+        correlation_delta_1 = corr(devicesCapacity', wirelessTT_PerDevice', 'Type', 'Spearman');
         correlation_epsilon = corr(1./finishTimePerDeviceWithoutWireless', wirelessTT_PerDevice', 'Type', 'Spearman');
-%         if correlation - 0.8 < 0 
+%         if correlation_delta > -0.5 
 %             fitness = Inf;
 %         else
             fitness = ...
@@ -121,6 +122,7 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     fitnessRecord.finishTime = finishTime;
     fitnessRecord.Ws_Std = Ws_Std;
     fitnessRecord.correlation_delta = correlation_delta;
+    fitnessRecord.correlation_delta_1 = correlation_delta_1;
     fitnessRecord.correlation_epsilon = correlation_epsilon;
     fitnessRecord.wirelessTT_PerDevice = wirelessTT_PerDevice;
     fitnessRecord.finishTimePerDevice = finishTimePerDevice;
@@ -128,7 +130,6 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     fitnessRecord.wirelessTT_PerDevice_WithWeight = wirelessTT_PerDevice_WithWeight;
     fitnessRecord.finishTimePerDeviceWithoutWireless = finishTimePerDeviceWithoutWireless;
     fitnessRecord.PN_Devices_Per = PN_Devices_Per;
-
 end
 %% 每个设备上的逗留时间计算，函数封装
 %N_Device设备的容量，ar_Device设备上的任务到达率（待定）

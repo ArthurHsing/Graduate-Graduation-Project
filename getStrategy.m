@@ -8,7 +8,7 @@ function [xmin, FR, FRBest] = getStrategy()
     deviceNum = systemConfig.deviceNum;
     dim = deviceNum + 1; % 维度，设备个数加上一个边缘节点的个数
     edgeNum = systemConfig.edgeNum; %边缘服务器个数
-    T= 200; %迭代次数
+    T= 700; %迭代次数
     % 边缘节点排队系统容量的最小值 应当大于或等于 边缘服务器的个数，所以将搜索范围的最小值作为边缘服务器的个数
     Lb=[ones(1, deviceNum) edgeNum];
     Ub=[ones(1, deviceNum)*20 100];

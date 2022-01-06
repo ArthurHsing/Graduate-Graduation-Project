@@ -9,7 +9,10 @@
 %
 %Xprey是全局最优解得位置，Food_Score是全局最优解，CNVG是每次迭代的最优解
 function [Xprey, Food_Score,CNVG, FR, FRBest, CNVG_Subtract_STD] = HBA(objfunc, dim,lb,ub,tmax,N)
-beta       = 6;     % the ability of HB to get the food  Eq.(4)，取值范围是大于等于1，默认是6
+global systemConfig;
+T_annealing = systemConfig. T_annealing; %模拟退火的温度
+k_annealing = 1; %模拟退火的参数k
+beta       =  6;     % the ability of HB to get the food  Eq.(4)，取值范围是大于等于1，默认是6
 C       = 2;     %constant in Eq. (3)取值范围是大于等于1，默认是2
 vec_flag=[1,-1];
 %initialization
@@ -28,12 +31,18 @@ for t = 1:tmax
     alpha=C*exp(-t/tmax);   %density factor in Eq. (3)
     I=Intensity(N,Xprey,X); %intensity in Eq. (2)
     Xnew = zeros(N, dim);
+    k_annealing = k_annealing + 1;
+    if systemConfig.isAnnealing && t ~= 1 && mod(t, 100) == 1
+        T_annealing = systemConfig.alpha_annealing .* T_annealing;
+        k_annealing = 1;
+    end
     for i=1:N
         r =rand(); %一旦r确定了，当前个体所有维度的更新都只能采用一种方法
         F=vec_flag(floor(2*rand()+1));
         for j=1:1:dim
             di=abs((Xprey(j)-X(i,j)));
             if r<.5
+%             if r < alpha
 %             if t > tmax/2
                 r3=rand;                r4=rand;                r5=rand;
                 temp11 = Xprey(j);
@@ -62,6 +71,20 @@ for t = 1:tmax
             fitness(i)=tempFitness; %更新最优值
             FR(i) = tempFR;
             X(i,:)= Xnew(i,:); %更新最优位置
+        elseif systemConfig.isAnnealing %如果采用了模拟退火算法
+            if (isnan(tempFitness))
+                tempFitness = Inf;
+            end
+            deltaBestTemp = -(tempFitness - fitness(i));
+%             if deltaBestTemp < 0
+%                 disp('debug');
+%             end
+            pUpdateTemp = exp(deltaBestTemp./(t.*T_annealing));
+            if rand < pUpdateTemp
+                fitness(i)=tempFitness; %更新最优值
+                FR(i) = tempFR;
+                X(i,:)= Xnew(i,:); %更新最优位置
+            end
         end
     end
     FU=X>ub;
@@ -70,10 +93,21 @@ for t = 1:tmax
     [Ybest,index] = min(fitness); %当前迭代所有个体的最优值和下标
     CNVG(t)=min(Ybest); %保存当前迭代的最优值，这个min就用得很魔性，Ybest就是一个数而已
     CNVG_Subtract_STD(t) = FR(index).finishTime;
-    if Ybest<GYbest %用当前的最优值去更新全局的最优值
-        GYbest=Ybest;
-        Xprey = X(index,:);
-        FRBest = FR(index);
+    if Ybest < GYbest%用当前的最优值去更新全局的最优值
+            GYbest=Ybest;
+            Xprey = X(index,:);
+            FRBest = FR(index);
+%     elseif systemConfig.isAnnealing %如果采用了模拟退火算法
+%         deltaBest = -(Ybest - GYbest);
+%         pUpdate = exp(deltaBest./(t.*systemConfig.T_annealing));
+% %         if rand < pUpdate && FRBest.correlation_delta < -0.5
+%         if FR(index).correlation_delta < FRBest.correlation_delta
+%             GYbest=Ybest;
+%             Xprey = X(index,:);
+%             FRBest = FR(index);
+% %         else
+% %             disp('debug');
+%         end
     end
     historyXpreys(t + 1, :) = Xprey;
 end

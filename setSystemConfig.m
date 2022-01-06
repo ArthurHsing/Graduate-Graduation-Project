@@ -8,9 +8,9 @@ function [r] = setSystemConfig()
         systemConfig.alpha = 0.6; %时延的影响因子
         systemConfig.beta = 0.4; %方差的影响因子
     else
-        systemConfig.alpha = 0.8; %时延的影响因子
+        systemConfig.alpha = 1; %时延的影响因子
         systemConfig.beta = 0; %方差的影响因子       
-        systemConfig.gamma = 0.2; %单独把时延提取出来
+        systemConfig.gamma = 0; %单独把时延提取出来
         systemConfig.delta = 0; %系统容量与传输时延的相关系数
         systemConfig.epsilon = 0; %系统容量与任务在设备上的平均完成时延的相关系数
         systemConfig.zeta = 0;
@@ -30,10 +30,15 @@ function [r] = setSystemConfig()
 
 %     systemConfig.alpha = 1; %时延的影响因子
 %     systemConfig.beta = 0; %方差的影响因子
+    %模拟退火的参数
+    systemConfig.isAnnealing = 1; %是否采用模拟退火
+    systemConfig.T_annealing = 3e-5; %模拟退火的温度
+    systemConfig.alpha_annealing = 1; %模拟退火的降温系数
+
     %时间精度
     systemConfig.d = 4;
     %任务情况
-    systemConfig.taskSize = 3*10e6; % 1M bits
+    systemConfig.taskSize = 3*10e6; % 1M bits·
     systemConfig.taskComputationIntensityPerBit = 2; % 10cycles
     systemConfig.noArr = 50; %任务个数
     %设备情况
