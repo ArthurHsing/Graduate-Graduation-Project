@@ -130,6 +130,7 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     fitnessRecord.wirelessTT_PerDevice_WithWeight = wirelessTT_PerDevice_WithWeight;
     fitnessRecord.finishTimePerDeviceWithoutWireless = finishTimePerDeviceWithoutWireless;
     fitnessRecord.PN_Devices_Per = PN_Devices_Per;
+    fitnessRecord.capacity = capacity;
 end
 %% 每个设备上的逗留时间计算，函数封装
 %N_Device设备的容量，ar_Device设备上的任务到达率（待定）

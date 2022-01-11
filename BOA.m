@@ -27,7 +27,6 @@ function [fmin,best_pos,Convergence_curve, FRBest]=BOA(n,N_iter,Lb,Ub,dim,fobj)
         Fitness(i)=fobj(Sol(i,:));
         FR(i) = fitnessRecord;
     end
-    clear fitnessTemp fitnessRecord; %清除临时变量
     
     % Find the current best_pos
     [fmin,I]=min(Fitness);

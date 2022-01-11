@@ -3,6 +3,7 @@ setSystemConfig();
 global bestOffloadNumResult;
 global systemConfig;
 global bestOffloadNumResult_BOA;
+global bestOffloadNumResult_PSO;
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
 % [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
@@ -62,7 +63,8 @@ global bestOffloadNumResult_BOA;
 % myOffload();
 
 %测试其它算法
-getStrategy_BOA();
+% getStrategy_BOA();
+getStrategy_PSO();
 
 function [average]  = getAverageOfSeveralExperimentTimes(allTimes)
     experimentTypeCell = fieldnames(allTimes);
