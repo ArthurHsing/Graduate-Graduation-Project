@@ -4,6 +4,7 @@ global bestOffloadNumResult;
 global systemConfig;
 global bestOffloadNumResult_BOA;
 global bestOffloadNumResult_PSO;
+global bestOffloadNumResult_CSA;
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
 % [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
@@ -40,19 +41,19 @@ global bestOffloadNumResult_PSO;
 % end
 
 % 测试模拟退火改进HBA
-% result = 0;
-% corr_Aver = 0;
-% max = 1;
-% for q = 1 : max
-%         systemConfig.wireless.wireless_gains = raylrnd(ones(...
-%             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
-%     getStrategy();
-%     result = result + bestOffloadNumResult.finishTime .* (1/max);
-%     bestOffloadNumResult.FRBest.correlation_delta
-%     corr_Aver = corr_Aver + bestOffloadNumResult.FRBest.correlation_delta .* (1/max);
-% end
-% disp(result);
-% disp(corr_Aver);
+result = 0;
+corr_Aver = 0;
+max = 10;
+for q = 1 : max
+        systemConfig.wireless.wireless_gains = raylrnd(ones(...
+            1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
+    getStrategy();
+    result = result + bestOffloadNumResult.finishTime .* (1/max);
+    bestOffloadNumResult.FRBest.correlation_delta
+    corr_Aver = corr_Aver + bestOffloadNumResult.FRBest.correlation_delta .* (1/max);
+end
+disp(result);
+disp(corr_Aver);
 
 
 % [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
@@ -65,7 +66,22 @@ global bestOffloadNumResult_PSO;
 %测试其它算法
 % getStrategy_BOA();
 % getStrategy_PSO();
-getStrategy_GPC();
+% getStrategy_GPC();
+% getStrategy_CSA();
+% 测试CSA
+% result = 0;
+% corr_Aver = 0;
+% max = 10;
+% for q = 1 : max
+%         systemConfig.wireless.wireless_gains = raylrnd(ones(...
+%             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
+%     getStrategy_CSA();
+%     result = result + bestOffloadNumResult_CSA.FRBest.finishTime .* (1/max);
+%     bestOffloadNumResult_CSA.FRBest.correlation_delta
+%     corr_Aver = corr_Aver + bestOffloadNumResult_CSA.FRBest.correlation_delta .* (1/max);
+% end
+% disp(result);
+% disp(corr_Aver);
 
 function [average]  = getAverageOfSeveralExperimentTimes(allTimes)
     experimentTypeCell = fieldnames(allTimes);
