@@ -28,7 +28,7 @@ function [] = getStrategy_BOA()
     legend('BOA')
 
     display(['The best solution obtained by BOA is : ', num2str(Best_pos)]);
-    display(['The best optimal value of the objective funciton found by BOA is : ', num2str(Best_score)]);
+    display(['The best optimal value of the objective funciton found by BOA is : ', num2str(FRBest.finishTime)]);
 end
 
 function o = F1(x)

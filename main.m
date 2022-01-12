@@ -64,7 +64,8 @@ global bestOffloadNumResult_PSO;
 
 %测试其它算法
 % getStrategy_BOA();
-getStrategy_PSO();
+% getStrategy_PSO();
+getStrategy_GPC();
 
 function [average]  = getAverageOfSeveralExperimentTimes(allTimes)
     experimentTypeCell = fieldnames(allTimes);
