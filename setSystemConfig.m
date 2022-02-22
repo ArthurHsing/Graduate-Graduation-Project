@@ -40,7 +40,7 @@ function [r] = setSystemConfig()
     systemConfig.d = 4;
     %任务情况
 %     systemConfig.taskSize = 3*10e6; % 3M bits·
-    systemConfig.taskSize = 0.3*8*1024*1024; %0.3M byte
+    systemConfig.taskSize = 3*8*1024*1024; %3M byte
     systemConfig.taskComputationIntensityPerBit = 2; % 10cycles
     systemConfig.noArr = 50; %任务个数
     %设备情况
