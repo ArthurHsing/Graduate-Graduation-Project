@@ -19,7 +19,7 @@ global bestOffloadNumResult_CSA;
 
 % % 第一个点做四组实验，每一个实验改变无线信道的传输速率（任务到达率的改变）
 for m = 1:4
-    systemConfig.wireless.bandWidth = m*10e6*3; %带宽kMHz
+    systemConfig.wireless.bandWidth = m*10e6*2; %带宽kMHz
     % 做多次实验求平均——任务到达率的变化
     for i = 1:systemConfig.experimentTimes
         changeRateResultArr(i).arriveRateChange = arriveRateChange(); %任务到达率的改变
