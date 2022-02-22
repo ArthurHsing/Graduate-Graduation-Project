@@ -1,6 +1,6 @@
 function [r] = setSystemConfig()
     global systemConfig;
-    systemConfig.experimentTimes = 5; %实验次数
+    systemConfig.experimentTimes = 1; %实验次数
     %是否考虑信道波动
     systemConfig.isChannelWaved = 0;
     %模型每一部分的比例
@@ -44,15 +44,15 @@ function [r] = setSystemConfig()
     systemConfig.taskComputationIntensityPerBit = 2; % 10cycles
     systemConfig.noArr = 50; %任务个数
     %设备情况
-    systemConfig.deviceCPUFrequency = 200*10e6; % 200MHz
+    systemConfig.deviceCPUFrequency = 1500e6; % 200MHz
     systemConfig.deviceNum = 30;% 设备个数
     systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*30; %设备上的任务到达率
     [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
     systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
     systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
     %边缘服务器情况
-    systemConfig.edgeCPUFrequency = 1*10e9; % 2GHz
-    systemConfig.edgeNum = 3; %边缘服务器的个数; 
+    systemConfig.edgeCPUFrequency = 5e9; % 2GHz
+    systemConfig.edgeNum = 5; %边缘服务器的个数; 
     % 云服务器情况
     systemConfig.cloudCPUFrequency = 10*10e9; %10GHz
     
