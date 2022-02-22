@@ -5,6 +5,7 @@ global systemConfig;
 global bestOffloadNumResult_BOA;
 global bestOffloadNumResult_PSO;
 global bestOffloadNumResult_CSA;
+
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
 % [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
@@ -16,8 +17,8 @@ global bestOffloadNumResult_CSA;
 % systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益
 % changeRateResultArr = struct([]);
 
-% % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务到达率的改变）
-for m = 1:3
+% % 第一个点做四组实验，每一个实验改变无线信道的传输速率（任务到达率的改变）
+for m = 1:4
     systemConfig.wireless.bandWidth = m*10e6*3; %带宽kMHz
     % 做多次实验求平均——任务到达率的变化
     for i = 1:systemConfig.experimentTimes
@@ -28,6 +29,10 @@ for m = 1:3
     arriveRateChange_draw([changeRateResult(m)], m, 0); %画图
 end
 
+%调整作图
+% for m = 1:4
+%     arriveRateChange_draw([changeRateResult(m)], m, 0); %画图
+% end
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
 % for n = 1:3
 %     systemConfig.wireless.bandWidth = n*10e6; %带宽nMHz
