@@ -35,14 +35,14 @@ end
 % end
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
 % for n = 1:3
-%     systemConfig.wireless.bandWidth = n*10e6; %带宽nMHz
+%     systemConfig.wireless.bandWidth = n*10e6*3; %带宽nMHz
 %     % 做多次实验求平均——任务体积的变化
 %     for j = 1:systemConfig.experimentTimes
 %         changeTaskSizeResultArr(j).changeTaskSize = taskSizeChange(); %任务体积的改变
 %     end
-%     changeTaskSizeResult = getAverageOfSeveralExperimentTimes(changeTaskSizeResultArr);
+%     changeTaskSizeResult(n) = getAverageOfSeveralExperimentTimes(changeTaskSizeResultArr);
 %     % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
-%     taskSizeChange_draw(changeTaskSizeResult, n, 0); %画图
+%     taskSizeChange_draw(changeTaskSizeResult(n), n, 0); %画图
 % end
 
 % 测试模拟退火改进HBA
