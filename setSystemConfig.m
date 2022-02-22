@@ -5,8 +5,8 @@ function [r] = setSystemConfig()
     systemConfig.isChannelWaved = 0;
     %模型每一部分的比例
     if ~systemConfig.isChannelWaved
-        systemConfig.alpha = 0.6; %时延的影响因子
-        systemConfig.beta = 0.4; %方差的影响因子
+        systemConfig.alpha = 1; %时延的影响因子
+        systemConfig.beta = 0; %方差的影响因子
     else
         systemConfig.alpha = 1; %时延的影响因子
         systemConfig.beta = 0; %方差的影响因子       
