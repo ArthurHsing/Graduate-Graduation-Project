@@ -1,8 +1,8 @@
 function [r] = setSystemConfig()
     global systemConfig;
-    systemConfig.experimentTimes = 10; %实验次数
+    systemConfig.experimentTimes = 5; %实验次数
     %是否考虑信道波动
-    systemConfig.isChannelWaved = 1;
+    systemConfig.isChannelWaved = 0;
     %模型每一部分的比例
     if ~systemConfig.isChannelWaved
         systemConfig.alpha = 0.6; %时延的影响因子
@@ -31,8 +31,9 @@ function [r] = setSystemConfig()
 %     systemConfig.alpha = 1; %时延的影响因子
 %     systemConfig.beta = 0; %方差的影响因子
     %模拟退火的参数
-    systemConfig.isAnnealing = 1; %是否采用模拟退火
+    systemConfig.isAnnealing = 0; %是否采用模拟退火
     systemConfig.T_annealing = 3e-5; %模拟退火的温度
+%     systemConfig.T_annealing = 1; %模拟退火的温度
     systemConfig.alpha_annealing = 1; %模拟退火的降温系数
 
     %时间精度
@@ -43,7 +44,7 @@ function [r] = setSystemConfig()
     systemConfig.noArr = 50; %任务个数
     %设备情况
     systemConfig.deviceCPUFrequency = 200*10e6; % 200MHz
-    systemConfig.deviceNum = 20;% 设备个数
+    systemConfig.deviceNum = 30;% 设备个数
     systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*30; %设备上的任务到达率
     [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
     systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔

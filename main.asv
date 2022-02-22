@@ -23,9 +23,9 @@ for m = 1:3
     for i = 1:systemConfig.experimentTimes
         changeRateResultArr(i).arriveRateChange = arriveRateChange(); %任务到达率的改变
     end
-    changeRateResult(m) = getAverageOfSeveralExperimentTimes(changeRateResultArr);
+    changeRateResult = getAverageOfSeveralExperimentTimes(changeRateResultArr);
     % [changeRateResult] = arriveRateChange(); %任务到达率的改变
-    arriveRateChange_draw([changeRateResult(m)], m, 0); %画图
+    arriveRateChange_draw(changeRateResult, m, 0); %画图
 end
 
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）

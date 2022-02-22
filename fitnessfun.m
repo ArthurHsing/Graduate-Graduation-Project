@@ -64,6 +64,8 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
         PN_Devices_average = PN_Devices_average + PN_Device.*(ar_Device./deviceArrivalRate_Sum);
 %         devicesRecord(i, :) = [Ws_Device_Per, ar_Device, PN_Device, wirelessTTPer];
         Ws_Device = Ws_Device + Ws_Device_Per.*(1 - PN_Device).*(ar_Device./deviceArrivalRate_Sum);
+%         Ws_Device = Ws_Device + Ws_Device_Per.*(ar_Device./deviceArrivalRate_Sum);
+        
         wirelessTT = wirelessTT + wirelessTTPer.*PN_Device.*(ar_Device./deviceArrivalRate_Sum);
         wirelessTT_PerDevice(i) = wirelessTTPer;
         wirelessTT_PerDevice_WithWeight(i) = wirelessTTPer.*PN_Device.*(ar_Device./deviceArrivalRate_Sum);
@@ -121,9 +123,11 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
     fitnessRecord.fitness = fitness;
     fitnessRecord.finishTime = finishTime;
     fitnessRecord.Ws_Std = Ws_Std;
-    fitnessRecord.correlation_delta = correlation_delta;
-    fitnessRecord.correlation_delta_1 = correlation_delta_1;
-    fitnessRecord.correlation_epsilon = correlation_epsilon;
+    if systemConfig.isChannelWaved
+         fitnessRecord.correlation_delta = correlation_delta;
+        fitnessRecord.correlation_delta_1 = correlation_delta_1;
+        fitnessRecord.correlation_epsilon = correlation_epsilon;
+    end
     fitnessRecord.wirelessTT_PerDevice = wirelessTT_PerDevice;
     fitnessRecord.finishTimePerDevice = finishTimePerDevice;
     fitnessRecord.finishTimePerDeviceWithoutEdgeCloud = finishTimePerDeviceWithoutEdgeCloud;
