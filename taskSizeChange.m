@@ -1,7 +1,7 @@
 function [result] = taskSizeChange()
     global systemConfig;
     % 各个设备与边缘节点的无线信道的信道增益，这里设为无增益，都为1
-    maxAr = 2;
+    maxAr = 5;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];
@@ -14,7 +14,7 @@ function [result] = taskSizeChange()
     avrTime_RandomOffload = [];
     avrTime_MmssOffload = [];
     % 任务体积的变化，从0.5M到5M
-    for ar = 0.2:0.2:maxAr
+    for ar = 0.5:0.5:maxAr
         systemConfig.taskSize = (ar)*8*1024*1024; %任务体积的变化
         %每次改变体积，都需要重新生成任务
         [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
