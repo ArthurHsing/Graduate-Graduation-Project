@@ -1,6 +1,6 @@
 function [r] = setSystemConfig()
     global systemConfig;
-    systemConfig.experimentTimes = 1; %实验次数
+    systemConfig.experimentTimes = 5; %实验次数
     %是否考虑信道波动
     systemConfig.isChannelWaved = 0;
     %模型每一部分的比例

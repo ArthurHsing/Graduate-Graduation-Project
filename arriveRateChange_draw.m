@@ -1,5 +1,7 @@
-function [] = arriveRateChange_draw(changeRateResult, tGroup, figureExisted)
-    figure(2*tGroup - 1 + figureExisted);
+function [] = arriveRateChange_draw(changeRateResult)
+    global figure_Num;
+    figure_Num = figure_Num + 1;
+    figure(figure_Num);
     avrTime_Real_myOffload = round([changeRateResult.avrTime.myOffload].*1000);
     avrTime_Real_mmssOffload = round([changeRateResult.avrTime.mmssOffload].*1000);
     avrTime_Real_randomOffload = round([changeRateResult.avrTime.randomOffload].*1000);
@@ -32,19 +34,33 @@ function [] = arriveRateChange_draw(changeRateResult, tGroup, figureExisted)
     xlabel('任务到达率（个/秒）');  %x轴坐标描述
     ylabel('任务平均完成时延（毫秒）'); %y轴坐标描述
     
-    figure(2*tGroup + figureExisted);
+    figure_Num = figure_Num + 1;
+    figure(figure_Num);
     p_offload_device = round([changeRateResult.myOffloadSimulationData.pOffDevice], 2);
-    p_offload_edge = round([changeRateResult.myOffloadSimulationData.pOffEdge], 2);
     plot(...
-    avrTime_Real_X,p_offload_device,'-*r',...
-    avrTime_Real_X,p_offload_edge,'-og'...
+    avrTime_Real_X,p_offload_device,'-*r'...
     ); %线性，颜色，标记
     set(gca,'XTick',5:5:Xlength)
     set(gca,'YTick',[0:0.1:1]) %y轴范围0-700，间隔100    legend('设备','边缘节点');
-    legend(...
-    '设备',...
-    '边缘节点'...
-    );   %右上角标注
+%     legend(...
+%     '设备',...
+%     '边缘节点'...
+%     );   %右上角标注
+    xlabel('任务到达率（个/秒）');  %x轴坐标描述
+    ylabel('被卸载任务的比率（×100%）'); %y轴坐标描述
+    
+    figure_Num = figure_Num + 1;
+    figure(figure_Num);
+    p_offload_edge = round([changeRateResult.myOffloadSimulationData.pOffEdge], 2);
+    plot(...
+    avrTime_Real_X,p_offload_edge,'-*r'...
+    ); %线性，颜色，标记
+    set(gca,'XTick',5:5:Xlength)
+    set(gca,'YTick',[0:0.1:1]) %y轴范围0-700，间隔100    legend('设备','边缘节点');
+%     legend(...
+%     '设备',...
+%     '边缘节点'...
+%     );   %右上角标注
     xlabel('任务到达率（个/秒）');  %x轴坐标描述
     ylabel('被卸载任务的比率（×100%）'); %y轴坐标描述
 %     figure(2);

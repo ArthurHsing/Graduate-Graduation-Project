@@ -1,10 +1,12 @@
-clear all;close all;clc;
-setSystemConfig();
-global bestOffloadNumResult;
-global systemConfig;
-global bestOffloadNumResult_BOA;
-global bestOffloadNumResult_PSO;
-global bestOffloadNumResult_CSA;
+% clear all;close all;clc;
+% setSystemConfig();
+% global bestOffloadNumResult;
+% global systemConfig;
+% global bestOffloadNumResult_BOA;
+% global bestOffloadNumResult_PSO;
+% global bestOffloadNumResult_CSA;
+global figure_Num;
+figure_Num = 0;
 
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
@@ -18,20 +20,20 @@ global bestOffloadNumResult_CSA;
 % changeRateResultArr = struct([]);
 
 % % 第一个点做四组实验，每一个实验改变无线信道的传输速率（任务到达率的改变）
-for m = 4:4
-    systemConfig.wireless.bandWidth = m*10e6*2; %带宽kMHz
-    % 做多次实验求平均——任务到达率的变化
-    for i = 1:systemConfig.experimentTimes
-        changeRateResultArr(i).arriveRateChange = arriveRateChange(); %任务到达率的改变
-    end
-    changeRateResult(m) = getAverageOfSeveralExperimentTimes(changeRateResultArr);
-    % [changeRateResult] = arriveRateChange(); %任务到达率的改变
-    arriveRateChange_draw([changeRateResult(m)], m, 0); %画图
-end
-
-%调整作图
 % for m = 1:4
+%     systemConfig.wireless.bandWidth = m*10e6*2; %带宽kMHz
+%     % 做多次实验求平均——任务到达率的变化
+%     for i = 1:systemConfig.experimentTimes
+%         changeRateResultArr(i).arriveRateChange = arriveRateChange(); %任务到达率的改变
+%     end
+%     changeRateResult(m) = getAverageOfSeveralExperimentTimes(changeRateResultArr);
+%     % [changeRateResult] = arriveRateChange(); %任务到达率的改变
 %     arriveRateChange_draw([changeRateResult(m)], m, 0); %画图
+% end
+
+% 调整作图
+% for m = 1:4
+%     arriveRateChange_draw([changeRateResult(m)]); %画图
 % end
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
 % for n = 1:3
