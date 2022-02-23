@@ -1,12 +1,12 @@
 function [r] = setSystemConfig()
     global systemConfig;
-    systemConfig.experimentTimes = 5; %实验次数
+    systemConfig.experimentTimes = 1; %实验次数
     %是否考虑信道波动
     systemConfig.isChannelWaved = 0;
     %模型每一部分的比例
     if ~systemConfig.isChannelWaved
-        systemConfig.alpha = 1; %时延的影响因子
-        systemConfig.beta = 0; %方差的影响因子
+        systemConfig.alpha = 0.6; %时延的影响因子
+        systemConfig.beta = 0.4; %方差的影响因子
     else
         systemConfig.alpha = 1; %时延的影响因子
         systemConfig.beta = 0; %方差的影响因子       
@@ -69,10 +69,10 @@ function [r] = setSystemConfig()
 
     systemConfig.wireless.noisePower = 1e-2; %背景噪声功率 10e-2W
     systemConfig.wireless.transmissionPower = 1; %传输功率 1W
-    systemConfig.wireless.bandWidth = 1*10e6; %带宽1MHz
+    systemConfig.wireless.bandWidth = 50*10e6; %带宽1MHz
     %有线信道配置
-    systemConfig.wired.bandWidth = 200*10e6; %带宽10Mbps
-    systemConfig.wired.metric = 10; %边缘服务器距离云服务的跳数，有10跳
+    systemConfig.wired.bandWidth = 500*10e6; %带宽10Mbps
+    systemConfig.wired.metric = 20; %边缘服务器距离云服务的跳数，有10跳
 
     r = systemConfig;
 end
