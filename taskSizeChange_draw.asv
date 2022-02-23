@@ -39,23 +39,20 @@ function [] = taskSizeChange_draw(changeTaskSizeResult)
     figure_Num = figure_Num + 1;
     figure(figure_Num);
     p_offload_device = round([changeTaskSizeResult.myOffloadSimulationData.pOffDevice], 2);
+    p_offload_edge = round([changeTaskSizeResult.myOffloadSimulationData.pOffEdge], 2);
     plot(...
-    avrTime_Real_X,p_offload_device,'-*r'...
+    avrTime_Real_X,p_offload_device,'-*r',...
+    avrTime_Real_X,p_offload_edge,'-og'...
     ); %线性，颜色，标记
     set(gca,'XTick',avrTime_Real_X)
     set(gca,'YTick',[0:0.1:1]) %y轴范围0-700，间隔100    legend('设备','边缘节点');
+    legend(...
+    '设备',...
+    '边缘节点'...
+    );   %右上角标注
     xlabel('任务大小（MB）')  %x轴坐标描述
     ylabel('被卸载任务的比率（×100%）'); %y轴坐标描述    
     
-    figure_Num = figure_Num + 1;
-    figure(figure_Num);
-    p_offload_edge = round([changeTaskSizeResult.myOffloadSimulationData.pOffEdge], 2);
-    plot(...
-    avrTime_Real_X,p_offload_edge,'-*r'...
-    ); %线性，颜色，标记    
-    set(gca,'XTick',avrTime_Real_X)
-    set(gca,'YTick',[0:0.1:1]) %y轴范围0-700，间隔100    legend('设备','边缘节点');
-
 %     figure(2);
 %     avrTime_Real_myOffload;
 %     avrTime_Theory_myOffload = round([wirelessChannelChangeResult.myOffloadTheoryData.avrTime].*1000);
