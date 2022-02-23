@@ -1,10 +1,10 @@
-% clear all;close all;clc;
-% setSystemConfig();
-% global bestOffloadNumResult;
-% global systemConfig;
-% global bestOffloadNumResult_BOA;
-% global bestOffloadNumResult_PSO;
-% global bestOffloadNumResult_CSA;
+clear all;close all;clc;
+setSystemConfig();
+global bestOffloadNumResult;
+global systemConfig;
+global bestOffloadNumResult_BOA;
+global bestOffloadNumResult_PSO;
+global bestOffloadNumResult_CSA;
 global figure_Num;
 figure_Num = 0;
 
@@ -52,6 +52,24 @@ figure_Num = 0;
 %     taskSizeChange_draw([changeTaskSizeResult(n)]); %画图
 % end
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
+
+% 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
+for p = 1:1
+    systemConfig.wireless.bandWidth = p*10e6*2; %带宽nMHz
+    % 做多次实验求平均——任务体积的变化
+    for j = 1:systemConfig.experimentTimes
+        changeEdgeNumResultArr(j).changeEdgeNum = edgeNumChange(); %任务体积的改变
+    end
+    changeEdgeNumResult(p) = getAverageOfSeveralExperimentTimes(changeEdgeNumResultArr);
+    % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
+    edgeNumChange_draw(changeEdgeNumResult(p)); %画图
+end
+%调整作图
+% for p = 1:4
+%     edgeNumChange_draw([changeEdgeNumResult(p)]); %画图
+% end
+% 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
+
 
 
 % 测试模拟退火改进HBA
