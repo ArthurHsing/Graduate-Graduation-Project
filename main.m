@@ -48,9 +48,9 @@ figure_Num = 0;
 %     taskSizeChange_draw(changeTaskSizeResult(n)); %画图
 % end
 %调整作图
-% for n = 1:4
-%     taskSizeChange_draw([changeTaskSizeResult(n)]); %画图
-% end
+for n = 1:4
+    taskSizeChange_draw([changeTaskSizeResult(n)]); %画图
+end
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
 
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）

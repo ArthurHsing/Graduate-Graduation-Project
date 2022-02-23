@@ -26,7 +26,7 @@ function [] = taskSizeChange_draw(changeTaskSizeResult)
     ); %线性，颜色，标记
     % axis([0,6,0,700])  %确定x轴与y轴框图大小
     set(gca,'XTick',avrTime_Real_X) %x轴范围1-6，间隔1
-    set(gca,'YTick',[0:50:(Ylength + 100)]) %y轴范围0-700，间隔100
+    set(gca,'YTick',[0:100:(Ylength + 100)]) %y轴范围0-700，间隔100
     legend(...
     '本章卸载策略',...
     '基于损失制排队系统的卸载策略',...
@@ -42,6 +42,7 @@ function [] = taskSizeChange_draw(changeTaskSizeResult)
     plot(...
     avrTime_Real_X,p_offload_device,'-*r'...
     ); %线性，颜色，标记
+    axis([0.5, 5, 0, floor(max(p_offload_device)*10)/10 + 0.1]);
     set(gca,'XTick',avrTime_Real_X)
     set(gca,'YTick',[0:0.1:1]) %y轴范围0-700，间隔100    legend('设备','边缘节点');
     xlabel('任务大小（MB）')  %x轴坐标描述
@@ -53,6 +54,8 @@ function [] = taskSizeChange_draw(changeTaskSizeResult)
     plot(...
     avrTime_Real_X,p_offload_edge,'-*r'...
     ); %线性，颜色，标记    
+    axis([0.5, 5, 0, floor(max(p_offload_edge)*10)/10 + 0.1]);
+%     floor(max(p_offload_edge)*10)/10 + 0.1
     set(gca,'XTick',avrTime_Real_X)
     set(gca,'YTick',[0:0.1:1]) %y轴范围0-700，间隔100    legend('设备','边缘节点');
     xlabel('任务大小（MB）')  %x轴坐标描述
