@@ -1,6 +1,7 @@
 function [averageCompletionTime, p_off_device, p_off_edge, FRBest, averageTime_Device, averageTime_Edge, averageTime_Cloud] = myOffload()
+    FRBest = '写多了';
     % 拿到策略
-    [bestCapacity, FR, FRBest] = getStrategy();
+    [bestCapacity] = getStrategy();
     % 设备层仿真
     deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
     % 对设备层仿真得到的结果进行处理
