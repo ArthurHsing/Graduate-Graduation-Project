@@ -33,7 +33,7 @@ function [r] = setSystemConfig()
     %模拟退火的参数
     systemConfig.isAnnealing = 1; %是否采用模拟退火
 %     systemConfig.T_annealing = 3e-5; %模拟退火的温度
-    systemConfig.T_annealing =3e-5; %模拟退火的温度
+    systemConfig.T_annealing =5e1; %模拟退火的温度
 %     systemConfig.T_annealing = 5e-4; %模拟退火的温度
     systemConfig.alpha_annealing = 1; %模拟退火的降温系数
 
@@ -46,8 +46,8 @@ function [r] = setSystemConfig()
     systemConfig.noArr = 50; %任务个数
     %设备情况
     systemConfig.deviceCPUFrequency = 1500e6; % 200MHz
-    systemConfig.deviceNum = 30;% 设备个数
-    systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*30; %设备上的任务到达率
+    systemConfig.deviceNum = 10;% 设备个数
+    systemConfig.deviceArrivalRate = ones(1, systemConfig.deviceNum).*15; %设备上的任务到达率
     [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
     systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
     systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
@@ -63,7 +63,7 @@ function [r] = setSystemConfig()
         systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益
     else
         %如果考虑信道波动，那么无线信道的增益就不是固定的，而且每条信道的增益都不一样
-        systemConfig.wireless.wireless_gain_parameter = 2; %瑞利分布的基本参数
+        systemConfig.wireless.wireless_gain_parameter = 1; %瑞利分布的基本参数
         systemConfig.wireless.wireless_gains = raylrnd(ones(...
             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
     end    
