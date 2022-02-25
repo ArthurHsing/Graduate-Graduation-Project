@@ -7,7 +7,7 @@ global bestOffloadNumResult_PSO;
 global bestOffloadNumResult_CSA;
 global figure_Num;
 figure_Num = 0;
-
+global wirelessIsFirstTime;
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
 % [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
@@ -73,26 +73,38 @@ figure_Num = 0;
 
 
 % 测试模拟退火改进HBA
-result = 0;
-corr_Aver = 0;
-corr_Aver2 = 0;
-max = 10;
-for q = 1 : max
-        systemConfig.wireless.wireless_gains = raylrnd(ones(...
-            1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
-    getStrategy();
-    result = result + bestOffloadNumResult.finishTime .* (1/max);
-    bestOffloadNumResult.FRBest.correlation_delta
-    corr_Aver = corr_Aver + bestOffloadNumResult.FRBest.correlation_delta .* (1/max);
+% result = 0;
+% corr_Aver = 0;
+% corr_Aver2 = 0;
+% max = 10;
+% for q = 1 : 1
+%         systemConfig.wireless.wireless_gains = raylrnd(ones(...
+%             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
+%     getStrategy();
+%     result = result + bestOffloadNumResult.finishTime .* (1/max);
+%     bestOffloadNumResult.FRBest.correlation_delta
+%     corr_Aver = corr_Aver + bestOffloadNumResult.FRBest.correlation_delta .* (1/max);
+% 
+% end
+% disp(result);
+% disp(corr_Aver);
 
+%第二个点
+max = 1;
+for r = 1 : max
+    if r~= 1
+        wirelessIsFirstTime = 0;
+    else 
+        wirelessIsFirstTime = 1;
+    end
+    for j = 1 : systemConfig.experimentTimes
+        wirelessChangeResultArr(j).wirelessChange = wirelessChannelChange(); %任务体积的改变
+%         [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
+    end
+    changeWirelessResult(r) = getAverageOfSeveralExperimentTimes(wirelessChangeResultArr);
+    wirelessChannelChange_draw(changeWirelessResult); %画图
 end
-disp(result);
-disp(corr_Aver);
 
-
-
-% [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
-% wirelessChannelChange_draw(wirelessChannelChangeResult); %画图
 % capacityResult = 
 
 % systemConfig.taskSize = (1*10e6).*(2);

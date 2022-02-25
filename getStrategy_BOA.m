@@ -1,4 +1,4 @@
-function [] = getStrategy_BOA()
+function [Best_pos] = getStrategy_BOA()
     global systemConfig;
     global bestOffloadNumResult_BOA;
     N=10; % 种群大小
@@ -17,15 +17,15 @@ function [] = getStrategy_BOA()
 %     Ub = 100;
     [Best_score,Best_pos,cg_curve, FRBest]=BOA(N,T,Lb,Ub,dim,fobj);
     bestOffloadNumResult_BOA.FRBest = FRBest;
-    semilogy(cg_curve,'Color','r')
-    title('Convergence curve')
-    xlabel('Iteration');
-    ylabel('Best score obtained so far');
-
-    axis tight
-    grid off
-    box on
-    legend('BOA')
+%     semilogy(cg_curve,'Color','r')
+%     title('Convergence curve')
+%     xlabel('Iteration');
+%     ylabel('Best score obtained so far');
+% 
+%     axis tight
+%     grid off
+%     box on
+%     legend('BOA')
 
     display(['The best solution obtained by BOA is : ', num2str(Best_pos)]);
     display(['The best optimal value of the objective funciton found by BOA is : ', num2str(FRBest.finishTime)]);

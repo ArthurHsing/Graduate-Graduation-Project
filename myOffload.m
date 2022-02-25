@@ -1,7 +1,26 @@
-function [averageCompletionTime, p_off_device, p_off_edge, FRBest, averageTime_Device, averageTime_Edge, averageTime_Cloud] = myOffload()
+function [averageCompletionTime, p_off_device, p_off_edge, FRBest, averageTime_Device, averageTime_Edge, averageTime_Cloud] = myOffload(type)
+    global systemConfig;
+    systemConfig.isAnnealing = 0;
     FRBest = '写多了';
-    % 拿到策略
-    [bestCapacity] = getStrategy();
+    switch type
+        case 'O-HBA'
+             systemConfig.isAnnealing = 1; %是否采用模拟退火
+            [bestCapacity] = getStrategy();
+        case 'HBA'
+            systemConfig.isAnnealing = 0;
+            [bestCapacity] = getStrategy();
+        case 'BOA'
+            [bestCapacity] = getStrategy_BOA();
+        case 'CSA'
+            [bestCapacity] = getStrategy_CSA();
+        case 'GPC'
+            [bestCapacity] = getStrategy_GPC();        
+        case 'PSO'
+            [bestCapacity] = getStrategy_PSO();     
+        otherwise
+            disp('debug');
+    end
+
     % 设备层仿真
     deviceResultArr = deviceSimulation(bestCapacity(1, 1:end-1));
     % 对设备层仿真得到的结果进行处理
