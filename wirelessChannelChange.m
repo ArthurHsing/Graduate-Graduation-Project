@@ -1,8 +1,10 @@
 function [result] = wirelessChannelChange()
     global systemConfig;
+    global arrTimesAllSave;
+    global arrSrvTimeAllSave;
     global wirelessGainsSave;
     global wirelessIsFirstTime;
-    maxAr = 10;
+    maxAr = 3;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];
@@ -28,14 +30,22 @@ function [result] = wirelessChannelChange()
             systemConfig.wireless.wireless_gains = raylrnd(ones(...
                 systemConfig.wireless.wireless_gain_parameter, systemConfig.deviceNum)); %各个设备与边缘节点的无线信道的信道增益
             wirelessGainsSave(ar, :) = systemConfig.wireless.wireless_gains;
+            
+            [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
+            systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
+            systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
+            arrTimesAllSave = arrTimesAll;
+            arrSrvTimeAllSave = arrSrvTimeAll;
         else
             systemConfig.wireless.wireless_gains = wirelessGainsSave(ar, :);
+            systemConfig.arrTimesAll = arrTimesAllSave;
+            systemConfig.arrSrvTimeAll = arrSrvTimeAllSave;
         end
 %         avrWirelessChannelRate(end + 1) = getAverageWirelessChannelRate();
         %设置每个帧的任务都不一样
-%         [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
-%         systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
-%         systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
+        [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
+        systemConfig.arrTimesAll = arrTimesAll; %所有设备上的任务的到达间隔
+        systemConfig.arrSrvTimeAll = arrSrvTimeAll; %所有设备上的任务的服务时间间隔
         % 策略卸载
         [averageCompletionTime_MyOffload, p_off_device, p_off_edge] = myOffload('O-HBA');
         avrTime_MyOffload(end + 1) = averageCompletionTime_MyOffload;
@@ -61,9 +71,9 @@ function [result] = wirelessChannelChange()
 %         avrTimeTheory_MyOffload(end + 1) = FRBest.fitness;
 %         pOffDeviceTheory_MyOffload(end + 1) = FRBest.PN_Devices_average;
 %         pOffEdgeTheory_MyOffload(end + 1) = FRBest.PN_Edge;
-%         % 全在设备上进行计算
-%         [averageCompletionTime_AllInDeviceOffload] = allInDeviceOffload();
-%         avrTime_AllInDeviceOffload(end + 1) = averageCompletionTime_AllInDeviceOffload;
+        % 全在设备上进行计算
+        [averageCompletionTime_AllInDeviceOffload] = allInDeviceOffload();
+        avrTime_AllInDeviceOffload(end + 1) = averageCompletionTime_AllInDeviceOffload;
 %         % 全在边缘服务器上进行计算
 %         [averageCompletionTime_AllInEdgeOffload, wireLessDelay_AllInEdgeOffload] = allInEdgeOffload();
 %         avrTime_AllInEdgeOffload(end + 1) = averageCompletionTime_AllInEdgeOffload;
@@ -71,12 +81,12 @@ function [result] = wirelessChannelChange()
 %         % 全在云服务器上进行计算
 %         [averageCompletionTime_AllInCloudOffload] = allInCloudOffload();
 %         avrTime_AllInCloudOffload(end + 1) = averageCompletionTime_AllInCloudOffload;   
-%         % 随机卸载
-%         [averageCompletionTime_RandomInCloudOffload] = randomOffload();
-%         avrTime_RandomOffload(end + 1) = averageCompletionTime_RandomInCloudOffload;  
-%         % 损失制卸载
-%         [averageCompletionTime_MmssOffload] = mmssOffload();
-%         avrTime_MmssOffload(end + 1) = averageCompletionTime_MmssOffload;        
+        % 随机卸载
+        [averageCompletionTime_RandomInCloudOffload] = randomOffload();
+        avrTime_RandomOffload(end + 1) = averageCompletionTime_RandomInCloudOffload;  
+        % 损失制卸载
+        [averageCompletionTime_MmssOffload] = mmssOffload();
+        avrTime_MmssOffload(end + 1) = averageCompletionTime_MmssOffload;        
     end
      avrTime = struct(...
         'myOffload', mat2cell(avrTime_MyOffload, [1], ones(1, length(avrTime_MyOffload))),...
@@ -84,12 +94,12 @@ function [result] = wirelessChannelChange()
         'BOA',mat2cell(avrTime_BOA, [1], ones(1, length(avrTime_BOA))),...
         'CSA',mat2cell(avrTime_CSA, [1], ones(1, length(avrTime_CSA))),...
         'GPC',mat2cell(avrTime_GPC, [1], ones(1, length(avrTime_GPC))),...
-        'PSO',mat2cell(avrTime_PSO, [1], ones(1, length(avrTime_PSO)))...
-...%         'allInDeviceOffload', mat2cell(avrTime_AllInDeviceOffload, [1], ones(1, length(avrTime_AllInDeviceOffload))),...
+        'PSO',mat2cell(avrTime_PSO, [1], ones(1, length(avrTime_PSO))),...
+        'allInDeviceOffload', mat2cell(avrTime_AllInDeviceOffload, [1], ones(1, length(avrTime_AllInDeviceOffload))),...
 ...%         'allInEdgeOffload', mat2cell(avrTime_AllInEdgeOffload, [1], ones(1, length(avrTime_AllInEdgeOffload))),...
 ...%         'allInCloudOffload', mat2cell(avrTime_AllInCloudOffload, [1], ones(1, length(avrTime_AllInCloudOffload))),...
-...%         'mmssOffload', mat2cell(avrTime_MmssOffload, [1], ones(1, length(avrTime_MmssOffload))),...
-...%         'randomOffload', mat2cell(avrTime_RandomOffload, [1], ones(1, length(avrTime_RandomOffload)))...
+        'mmssOffload', mat2cell(avrTime_MmssOffload, [1], ones(1, length(avrTime_MmssOffload))),...
+        'randomOffload', mat2cell(avrTime_RandomOffload, [1], ones(1, length(avrTime_RandomOffload)))...
     );
     myOffloadSimulationData = struct(...
         'avrTime', mat2cell(avrTime_MyOffload, [1], ones(1, length(avrTime_MyOffload))),...

@@ -92,12 +92,12 @@ global wirelessIsFirstTime;
 %第二个点
 max = 1;
 for r = 1 : max
-    if r~= 1
-        wirelessIsFirstTime = 0;
-    else 
-        wirelessIsFirstTime = 1;
-    end
     for j = 1 : systemConfig.experimentTimes
+        if j~= 1
+            wirelessIsFirstTime = 0;
+        else 
+            wirelessIsFirstTime = 1;
+        end
         wirelessChangeResultArr(j).wirelessChange = wirelessChannelChange(); %任务体积的改变
 %         [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
     end
