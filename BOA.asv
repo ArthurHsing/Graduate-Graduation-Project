@@ -40,13 +40,10 @@ function [fmin,best_pos,Convergence_curve, FRBest]=BOA(n,N_iter,Lb,Ub,dim,fobj)
             for i=1:n % Loop over all butterflies/solutions
 
               %Calculate fragrance of each butterfly which is correlated with objective function
-            if isnan(S(i,:))
-                disp('111');
-            end
+                if isnan(S(i,:))
+                    disp('111');
+                end
               Fnew=fobj(S(i,:)); %这个实际上不是最新的，是上一次迭代的的，下面的操作在更新这个S(i, :)
-              if isnan(Fnew)
-                  dips('111');
-              end
               FP=(sensory_modality*(Fnew^power_exponent));   
 
               %Global or local search
@@ -60,9 +57,7 @@ function [fmin,best_pos,Convergence_curve, FRBest]=BOA(n,N_iter,Lb,Ub,dim,fobj)
                   dis=epsilon*epsilon*Sol(JK(1),:)-Sol(JK(2),:);
                   S(i,:)=Sol(i,:)+dis*FP;                         %Eq. (3) in paper
               end
-                if isnan(S(i,:))
-                    disp('111');
-                end              
+              
                 FU=S(i,:)>Ub;
                 FL=S(i,:)<Lb;
                 % Check if the simple limits/bounds are OK

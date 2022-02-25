@@ -1,4 +1,4 @@
-function [] = getStrategy_GPC()
+function [Best_pos] = getStrategy_GPC()
     global systemConfig;
     global bestOffloadNumResult_GPC;
     %% Problem Definition
@@ -33,15 +33,15 @@ function [] = getStrategy_GPC()
     [Best_score,Best_pos,cg_curve, FRBest]=GPC(CostFunction, VarSize, VarMin, VarMax, MaxIteration, nPop, G, Tetha, MuMin, MuMax, pSS);
     bestOffloadNumResult_GPC.FRBest = FRBest;
     
-    semilogy(cg_curve,'Color','r')
-    title('Convergence curve')
-    xlabel('Iteration');
-    ylabel('Best score obtained so far');
-
-    axis tight
-    grid off
-    box on
-    legend('GPC')
+%     semilogy(cg_curve,'Color','r')
+%     title('Convergence curve')
+%     xlabel('Iteration');
+%     ylabel('Best score obtained so far');
+% 
+%     axis tight
+%     grid off
+%     box on
+%     legend('GPC')
 
     display(['The best solution obtained by GPC is : ', num2str(Best_pos)]);
     display(['The best optimal value of the objective funciton found by GPC is : ', num2str(FRBest.finishTime)]);

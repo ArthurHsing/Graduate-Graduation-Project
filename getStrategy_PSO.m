@@ -1,4 +1,4 @@
-function [outputArg1,outputArg2] = getStrategy_PSO()
+function [Best_pos] = getStrategy_PSO()
     global systemConfig;
     global bestOffloadNumResult_PSO;
     N = 10;                         % 初始种群个数
@@ -16,14 +16,14 @@ function [outputArg1,outputArg2] = getStrategy_PSO()
     [Best_score,Best_pos, cg_curve, FRBest] = PSO(N,T,Lb,Ub,dim,fitfun,w,c1,c2,vlimit);
     bestOffloadNumResult_PSO.FRBest = FRBest;
     
-    figure,
-    semilogy(cg_curve,'r')
-    %     semilogy(CNVG_Subtract_STD,'r') %要减去标准差的图
-    xlim([0 T]);
-    title('Convergence curve')
-    xlabel('Iteration');
-    ylabel('Best fitness obtained so far');
-    legend('PSO');
+%     figure,
+%     semilogy(cg_curve,'r')
+%     %     semilogy(CNVG_Subtract_STD,'r') %要减去标准差的图
+%     xlim([0 T]);
+%     title('Convergence curve')
+%     xlabel('Iteration');
+%     ylabel('Best fitness obtained so far');
+%     legend('PSO');
     
     display(['The best solution obtained by PSO is : ', num2str(Best_pos)]);
     display(['The best optimal value of the objective funciton found by PSO is : ', num2str(Best_score)]);
