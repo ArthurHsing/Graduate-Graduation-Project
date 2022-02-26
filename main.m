@@ -1,5 +1,5 @@
-clear all;close all;clc;
-setSystemConfig();
+% clear all;close all;clc;
+% setSystemConfig();
 global systemConfig;
 global bestOffloadNumResult;
 global bestOffloadNumResult_BOA;
@@ -9,6 +9,7 @@ global bestOffloadNumResult_GPC;
 global figure_Num;
 figure_Num = 0;
 global wirelessIsFirstTime;
+
 % systemConfig.taskSize = 2*8*1024*1024; % 1M bits
 % systemConfig.taskSize = 1.8*8*1024*1024; % 1M bits
 % [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime();
@@ -104,6 +105,11 @@ for r = 1 : max
     end
     changeWirelessResult(r) = getAverageOfSeveralExperimentTimes(wirelessChangeResultArr);
     wirelessChannelChange_draw(changeWirelessResult); %画图
+end
+
+max = 1;
+for r = 1 : max
+    wirelessChannelChange_draw(changeWirelessResult(r)); %画图
 end
 
 % capacityResult = 

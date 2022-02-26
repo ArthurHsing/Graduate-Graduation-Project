@@ -185,7 +185,7 @@ function [wirelessTTPer] = wirelessTTFun(taskSize, wireless, i)
     rate = bw*log2(gain*tp/np);
     % 处理传输速率小于0的情况
     while rate <= 0
-        systemConfig.wireless.wireless_gains(i) = raylrnd(1);
+        systemConfig.wireless.wireless_gains(i) = raylrnd(systemConfig.wireless.wireless_gain_parameter);
         wireless = systemConfig.wireless;
         gain = wireless.wireless_gains(i);
         rate = bw*log2(gain*tp/np);
