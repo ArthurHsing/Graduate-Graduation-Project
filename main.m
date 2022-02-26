@@ -77,8 +77,8 @@ global wirelessIsFirstTime;
 % result = 0;
 % corr_Aver = 0;
 % corr_Aver2 = 0;
-% max = 10;
-% for q = 1 : 10
+% max = 50;
+% for q = 1 : max
 %         systemConfig.wireless.wireless_gains = raylrnd(ones(...
 %             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
 %     getStrategy();
@@ -91,20 +91,20 @@ global wirelessIsFirstTime;
 % disp(corr_Aver);
 
 %第二个点
-% max = 1;
-% for r = 1 : max
-%     for j = 1 : systemConfig.experimentTimes
-%         if j~= 1
-%             wirelessIsFirstTime = 0;
-%         else 
-%             wirelessIsFirstTime = 1;
-%         end
-%         wirelessChangeResultArr(j).wirelessChange = wirelessChannelChange(); %任务体积的改变
-% %         [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
-%     end
-%     changeWirelessResult(r) = getAverageOfSeveralExperimentTimes(wirelessChangeResultArr);
-%     wirelessChannelChange_draw(changeWirelessResult); %画图
-% end
+max = 1;
+for r = 1 : max
+    for j = 1 : systemConfig.experimentTimes
+        if j~= 1
+            wirelessIsFirstTime = 0;
+        else 
+            wirelessIsFirstTime = 1;
+        end
+        wirelessChangeResultArr(j).wirelessChange = wirelessChannelChange(); %任务体积的改变
+%         [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
+    end
+    changeWirelessResult(r) = getAverageOfSeveralExperimentTimes(wirelessChangeResultArr);
+    wirelessChannelChange_draw(changeWirelessResult); %画图
+end
 
 % capacityResult = 
 
@@ -117,19 +117,19 @@ global wirelessIsFirstTime;
 % getStrategy_GPC();
 % getStrategy_CSA();
 % 测试CSA
-result = 0;
-corr_Aver = 0;
-max = 10;
-for q = 1 : max
-        systemConfig.wireless.wireless_gains = raylrnd(ones(...
-            1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
-    getStrategy_GPC();
-    result = result + bestOffloadNumResult_GPC.FRBest.finishTime .* (1/max);
-    bestOffloadNumResult_GPC.FRBest.correlation_delta
-    corr_Aver = corr_Aver + bestOffloadNumResult_GPC.FRBest.correlation_delta .* (1/max);
-end
-disp(result);
-disp(corr_Aver);
+% result = 0;
+% corr_Aver = 0;
+% max = 50;
+% for q = 1 : max
+%         systemConfig.wireless.wireless_gains = raylrnd(ones(...
+%             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
+%     getStrategy_CSA();
+%     result = result + bestOffloadNumResult_CSA.FRBest.finishTime .* (1/max);
+%     bestOffloadNumResult_CSA.FRBest.correlation_delta
+%     corr_Aver = corr_Aver + bestOffloadNumResult_CSA.FRBest.correlation_delta .* (1/max);
+% end
+% disp(result);
+% disp(corr_Aver);
 
 function [average]  = getAverageOfSeveralExperimentTimes(allTimes)
     experimentTypeCell = fieldnames(allTimes);

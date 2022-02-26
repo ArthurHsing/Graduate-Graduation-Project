@@ -63,7 +63,7 @@ function [r] = setSystemConfig()
         systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益
     else
         %如果考虑信道波动，那么无线信道的增益就不是固定的，而且每条信道的增益都不一样
-        systemConfig.wireless.wireless_gain_parameter = 2; %瑞利分布的基本参数
+        systemConfig.wireless.wireless_gain_parameter = 1.5; %瑞利分布的基本参数
         systemConfig.wireless.wireless_gains = raylrnd(ones(...
             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
     end    
