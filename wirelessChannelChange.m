@@ -4,7 +4,12 @@ function [result] = wirelessChannelChange()
     global arrSrvTimeAllSave;
     global wirelessGainsSave;
     global wirelessIsFirstTime;
-    maxAr = 3;
+    global bestOffloadNumResult;
+    global bestOffloadNumResult_BOA;
+    global bestOffloadNumResult_PSO;
+    global bestOffloadNumResult_CSA;
+    global bestOffloadNumResult_GPC;
+    maxAr = 1;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];
@@ -24,6 +29,14 @@ function [result] = wirelessChannelChange()
     avrTime_CSA = [];
     avrTime_GPC = [];
     avrTime_PSO = [];
+    
+    correlation_my = [];
+    correlation_OriginHBA = [];
+    correlation_BOA = [];
+    correlation_CSA = [];
+    correlation_GPC = [];
+    correlation_PSO = [];
+
     % 做10次实验，信道变化10次
     for ar = 1:maxAr
         if wirelessIsFirstTime
@@ -51,21 +64,27 @@ function [result] = wirelessChannelChange()
         avrTime_MyOffload(end + 1) = averageCompletionTime_MyOffload;
         pOffDevice_MyOffload(end + 1) = p_off_device;
         pOffEdge_MyOffload(end + 1) = p_off_edge;
-
+        correlation_my(end + 1) = -bestOffloadNumResult.FRBest.correlation_delta;
+        
         [averageCompletionTime_OriginHBA] = myOffload('HBA');
         avrTime_OriginHBA(end + 1) = averageCompletionTime_OriginHBA;
+        correlation_OriginHBA(end + 1) = -bestOffloadNumResult.FRBest.correlation_delta;
         
         [averageCompletionTime_BOA] = myOffload('BOA');
         avrTime_BOA(end + 1) = averageCompletionTime_BOA;
+        correlation_BOA(end + 1) = -bestOffloadNumResult_BOA.FRBest.correlation_delta;
         
         [averageCompletionTime_CSA] = myOffload('CSA');
         avrTime_CSA(end + 1) = averageCompletionTime_CSA;
+        correlation_CSA(end + 1) = -bestOffloadNumResult_CSA.FRBest.correlation_delta;
         
         [averageCompletionTime_GPC] = myOffload('GPC');
         avrTime_GPC(end + 1) = averageCompletionTime_GPC;
+        correlation_GPC(end + 1) = -bestOffloadNumResult_GPC.FRBest.correlation_delta;
         
         [averageCompletionTime_PSO] = myOffload('PSO');
         avrTime_PSO(end + 1) = averageCompletionTime_PSO;
+        correlation_PSO(end + 1) = -bestOffloadNumResult_PSO.FRBest.correlation_delta;
 %         pOffDevice_OriginHBA(end + 1) = p_off_device_OriginHBA;
 %         pOffEdge_OriginHBA(end + 1) = p_off_edge_OriginHBA;
 %         avrTimeTheory_MyOffload(end + 1) = FRBest.fitness;
@@ -101,6 +120,14 @@ function [result] = wirelessChannelChange()
         'mmssOffload', mat2cell(avrTime_MmssOffload, [1], ones(1, length(avrTime_MmssOffload))),...
         'randomOffload', mat2cell(avrTime_RandomOffload, [1], ones(1, length(avrTime_RandomOffload)))...
     );
+    correlation = struct(...
+        'myOffload', mat2cell(correlation_my, [1], ones(1, length(correlation_my))),...
+        'originHBA',mat2cell(correlation_OriginHBA, [1], ones(1, length(correlation_OriginHBA))),...
+        'BOA',mat2cell(correlation_BOA, [1], ones(1, length(correlation_BOA))),...
+        'CSA',mat2cell(correlation_CSA, [1], ones(1, length(correlation_CSA))),...
+        'GPC',mat2cell(correlation_GPC, [1], ones(1, length(correlation_GPC))),...
+        'PSO',mat2cell(correlation_PSO, [1], ones(1, length(correlation_PSO)))...
+    );
     myOffloadSimulationData = struct(...
         'avrTime', mat2cell(avrTime_MyOffload, [1], ones(1, length(avrTime_MyOffload))),...
         'pOffDevice', mat2cell(pOffDevice_MyOffload, [1], ones(1, length(pOffDevice_MyOffload))),...
@@ -118,6 +145,8 @@ function [result] = wirelessChannelChange()
     result = struct(...
         'avrTime',...
         avrTime,... 
+        'correlation',...
+        correlation,... 
         'myOffloadSimulationData',...
         myOffloadSimulationData...
 ...%         'myOffloadTheoryData',...

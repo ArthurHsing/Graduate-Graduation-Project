@@ -100,10 +100,8 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
 %             fitness = Inf;
 %         else
             if isnan(correlation_delta)
-                [~, maxIndex] = max(wirelessTT_PerDevice);
-                devicesCapacity(maxIndex) = devicesCapacity(maxIndex) + 1;
-                correlation_delta = corr(1./devicesCapacity', wirelessTT_PerDevice', 'Type', 'Spearman');
-%                 correlation_delta = 0;
+                devicesCapacity(1) = devicesCapacity(1) + 1;
+                correlation_delta = correlation_delta;
             end
             fitness = ...
                 systemConfig.alpha .* finishTime;...
@@ -185,7 +183,7 @@ function [wirelessTTPer] = wirelessTTFun(taskSize, wireless, i)
     rate = bw*log2(gain*tp/np);
     % 处理传输速率小于0的情况
     while rate <= 0
-        systemConfig.wireless.wireless_gains(i) = raylrnd(systemConfig.wireless.wireless_gain_parameter);
+        systemConfig.wireless.wireless_gains(i) = raylrnd(1);
         wireless = systemConfig.wireless;
         gain = wireless.wireless_gains(i);
         rate = bw*log2(gain*tp/np);
