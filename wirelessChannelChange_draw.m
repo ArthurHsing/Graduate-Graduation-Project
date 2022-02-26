@@ -11,12 +11,12 @@ function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     avrTime_Real_mmssOffload = round([wirelessChannelChangeResult.avrTime.mmssOffload].*1000, 1);
     avrTime_Real_randomOffload = round([wirelessChannelChangeResult.avrTime.randomOffload].*1000, 1);
     avrTime_Real_allInDeviceOffload = round([wirelessChannelChangeResult.avrTime.allInDeviceOffload].*1000, 1);
-    correlation_Real_myOffload = [wirelessChannelChangeResult.correlation.myOffload].*1000;
-    correlation_Real_originHBA = [wirelessChannelChangeResult.correlation.originHBA].*1000;
-    correlation_Real_BOA = [wirelessChannelChangeResult.correlation.BOA].*1000;
-    correlation_Real_CSA = [wirelessChannelChangeResult.correlation.CSA].*1000;
-    correlation_Real_GPC = [wirelessChannelChangeResult.correlation.GPC].*1000;
-    correlation_Real_PSO = [wirelessChannelChangeResult.correlation.PSO].*1000;
+    correlation_Real_myOffload = [wirelessChannelChangeResult.correlation.myOffload];
+    correlation_Real_originHBA = [wirelessChannelChangeResult.correlation.originHBA];
+    correlation_Real_BOA = [wirelessChannelChangeResult.correlation.BOA];
+    correlation_Real_CSA = [wirelessChannelChangeResult.correlation.CSA];
+    correlation_Real_GPC = [wirelessChannelChangeResult.correlation.GPC];
+    correlation_Real_PSO = [wirelessChannelChangeResult.correlation.PSO];
 %     avrTime_Real_allInEdgeOffload = round([wirelessChannelChangeResult.avrTime.allInEdgeOffload].*1000);
 %     avrTime_Real_allInCloudOffload = round([wirelessChannelChangeResult.avrTime.allInCloudOffload].*1000);
     Xlength = length(avrTime_Real_myOffload);
@@ -73,7 +73,7 @@ function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     ); %线性，颜色，标记
     % axis([0,6,0,700])  %确定x轴与y轴框图大小
     set(gca,'XTick',avrTime_Real_X) %x轴范围1-6，间隔1
-    set(gca,'YTick',[0:10:(Ylength + 10)]) %y轴范围0-700，间隔100
+    set(gca,'YTick',[0:10:(YlengthStrategy + 10)]) %y轴范围0-700，间隔100
     legend(...
     '本章卸载策略',...
     '基于损失制排队系统的卸载策略',...

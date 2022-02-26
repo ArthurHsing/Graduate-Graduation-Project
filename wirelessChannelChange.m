@@ -9,7 +9,7 @@ function [result] = wirelessChannelChange()
     global bestOffloadNumResult_PSO;
     global bestOffloadNumResult_CSA;
     global bestOffloadNumResult_GPC;
-    maxAr = 1;
+    maxAr = 4;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];
@@ -41,7 +41,7 @@ function [result] = wirelessChannelChange()
     for ar = 1:maxAr
         if wirelessIsFirstTime
             systemConfig.wireless.wireless_gains = raylrnd(ones(...
-                systemConfig.wireless.wireless_gain_parameter, systemConfig.deviceNum)); %各个设备与边缘节点的无线信道的信道增益
+                1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
             wirelessGainsSave(ar, :) = systemConfig.wireless.wireless_gains;
             
             [arrTimesAll, arrSrvTimeAll] = getArriveTimeAndSrvTime(); 
