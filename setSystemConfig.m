@@ -1,6 +1,6 @@
 function [r] = setSystemConfig()
     global systemConfig;
-    systemConfig.experimentTimes = 2; %实验次数
+    systemConfig.experimentTimes = 1; %实验次数
     %是否考虑信道波动
     systemConfig.isChannelWaved = 1;
     %模型每一部分的比例
@@ -31,10 +31,10 @@ function [r] = setSystemConfig()
 %     systemConfig.alpha = 1; %时延的影响因子
 %     systemConfig.beta = 0; %方差的影响因子
     %模拟退火的参数
-    systemConfig.isAnnealing = 0; %是否采用模拟退火
+    systemConfig.isAnnealing = 1; %是否采用模拟退火
 %     systemConfig.T_annealing = 3e-5; %模拟退火的温度
-    systemConfig.T_annealing =5e0; %模拟退火的温度
-%     systemConfig.T_annealing = 5e-4; %模拟退火的温度
+%     systemConfig.T_annealing =5e0; %模拟退火的温度
+    systemConfig.T_annealing = 6e1; %模拟退火的温度
     systemConfig.alpha_annealing = 1; %模拟退火的降温系数
 
     %时间精度
@@ -63,7 +63,7 @@ function [r] = setSystemConfig()
         systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益
     else
         %如果考虑信道波动，那么无线信道的增益就不是固定的，而且每条信道的增益都不一样
-        systemConfig.wireless.wireless_gain_parameter = 1; %瑞利分布的基本参数
+        systemConfig.wireless.wireless_gain_parameter = 2; %瑞利分布的基本参数
         systemConfig.wireless.wireless_gains = raylrnd(ones(...
             1, systemConfig.deviceNum).*systemConfig.wireless.wireless_gain_parameter); %各个设备与边缘节点的无线信道的信道增益
     end    

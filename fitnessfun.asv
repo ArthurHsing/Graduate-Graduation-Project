@@ -100,10 +100,8 @@ function [fitness, fitnessRecord] = fitnessfun(capacity)
 %             fitness = Inf;
 %         else
             if isnan(correlation_delta)
-                [~, maxIndex] = max(wirelessTT_PerDevice);
-                devicesCapacity(maxIndex) = devicesCapacity(maxIndex) + 1;
-                correlation_delta = corr(1./devicesCapacity', wirelessTT_PerDevice', 'Type', 'Spearman');
-%                 correlation_delta = 0;
+                devicesCapacity(1) = devicesCapacity(1) + 1;
+                correlation_delta = correlation_delta;
             end
             fitness = ...
                 systemConfig.alpha .* finishTime;...
