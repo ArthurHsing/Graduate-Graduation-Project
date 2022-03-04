@@ -5,7 +5,7 @@ function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     avrTime_Real_myOffload = round([wirelessChannelChangeResult.avrTime.myOffload].*1000, 1);
     avrTime_Real_originHBA = round([wirelessChannelChangeResult.avrTime.originHBA].*1000, 1);
     avrTime_Real_BOA = round([wirelessChannelChangeResult.avrTime.BOA].*1000, 1);
-    avrTime_Real_CSA = round([wirelessChannelChangeResult.avrTime.CSA].*1000, 1);
+%     avrTime_Real_CSA = round([wirelessChannelChangeResult.avrTime.CSA].*1000, 1);
     avrTime_Real_GPC = round([wirelessChannelChangeResult.avrTime.GPC].*1000, 1);
     avrTime_Real_PSO = round([wirelessChannelChangeResult.avrTime.PSO].*1000, 1);
     avrTime_Real_mmssOffload = round([wirelessChannelChangeResult.avrTime.mmssOffload].*1000, 1);
@@ -14,7 +14,7 @@ function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     correlation_Real_myOffload = [wirelessChannelChangeResult.correlation.myOffload];
     correlation_Real_originHBA = [wirelessChannelChangeResult.correlation.originHBA];
     correlation_Real_BOA = [wirelessChannelChangeResult.correlation.BOA];
-    correlation_Real_CSA = [wirelessChannelChangeResult.correlation.CSA];
+%     correlation_Real_CSA = [wirelessChannelChangeResult.correlation.CSA];
     correlation_Real_GPC = [wirelessChannelChangeResult.correlation.GPC];
     correlation_Real_PSO = [wirelessChannelChangeResult.correlation.PSO];
 %     avrTime_Real_allInEdgeOffload = round([wirelessChannelChangeResult.avrTime.allInEdgeOffload].*1000);
@@ -51,7 +51,7 @@ function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     ); %线性，颜色，标记
     % axis([0,6,0,700])  %确定x轴与y轴框图大小
     set(gca,'XTick',[0:1:(Xlength + 1)]) %x轴范围1-6，间隔1
-    set(gca,'YTick',[0:0.5:(Ylength + 1)]) %y轴范围0-700，间隔100
+    set(gca,'YTick',[0:1:(Ylength + 1)]) %y轴范围0-700，间隔100
     legend(...
     'O-HBA',...
     'HBA',...
@@ -89,7 +89,7 @@ function [] = wirelessChannelChange_draw(wirelessChannelChangeResult)
     correlation_Real_myOffload,...
     correlation_Real_originHBA,...
     correlation_Real_BOA,...
-    correlation_Real_CSA,...
+...%     correlation_Real_CSA,...
     correlation_Real_GPC,...
     correlation_Real_PSO...
     ]);

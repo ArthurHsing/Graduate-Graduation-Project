@@ -9,7 +9,7 @@ function [result] = wirelessChannelChange()
     global bestOffloadNumResult_PSO;
     global bestOffloadNumResult_CSA;
     global bestOffloadNumResult_GPC;
-    maxAr = 4;
+    maxAr = 10;
     avrTime_MyOffload = [];
     pOffDevice_MyOffload = [];
     pOffEdge_MyOffload = [];

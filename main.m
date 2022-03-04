@@ -1,5 +1,5 @@
-% clear all;close all;clc;
-% setSystemConfig();
+clear all;close all;clc;
+setSystemConfig();
 global systemConfig;
 global bestOffloadNumResult;
 global bestOffloadNumResult_BOA;
@@ -92,11 +92,12 @@ global wirelessIsFirstTime;
 % disp(corr_Aver);
 
 %第二个点
-max = 1;
+max = 4;
 for r = 1 : max
+    systemConfig.wireless.wireless_gain_parameter = 0.5 * r;
     for j = 1 : systemConfig.experimentTimes
         if j~= 1
-            wirelessIsFirstTime = 0;
+            wirelessIsFirstTime = 1;
         else 
             wirelessIsFirstTime = 1;
         end
@@ -104,13 +105,13 @@ for r = 1 : max
 %         [wirelessChannelChangeResult] = wirelessChannelChange(); %信道的波动
     end
     changeWirelessResult(r) = getAverageOfSeveralExperimentTimes(wirelessChangeResultArr);
-    wirelessChannelChange_draw(changeWirelessResult); %画图
-end
-
-max = 1;
-for r = 1 : max
     wirelessChannelChange_draw(changeWirelessResult(r)); %画图
 end
+
+% max = 1;
+% for r = 1 : max
+%     wirelessChannelChange_draw(changeWirelessResult(r)); %画图
+% end
 
 % capacityResult = 
 
