@@ -19,17 +19,20 @@ figure_Num = 0;
 % systemConfig.wireless.wireless_gains = ones(1, systemConfig.deviceNum); %各个设备与边缘节点的无线信道的信道增益
 % changeRateResultArr = struct([]);
 
+originalWirelessBandWidth = systemConfig.wireless.bandWidth;
+originalArriveRate = systemConfig.deviceArrivalRate;
+originalTaskSize = systemConfig.taskSize;
 % % 第一个点做四组实验，每一个实验改变无线信道的传输速率（任务到达率的改变）
-% for m = 1:4
-%     systemConfig.wireless.bandWidth = m*10e6*2; %带宽kMHz
-%     % 做多次实验求平均——任务到达率的变化
-%     for i = 1:systemConfig.experimentTimes
-%         changeRateResultArr(i).arriveRateChange = arriveRateChange(); %任务到达率的改变
-%     end
-%     changeRateResult(m) = getAverageOfSeveralExperimentTimes(changeRateResultArr);
-%     % [changeRateResult] = arriveRateChange(); %任务到达率的改变
-%     arriveRateChange_draw([changeRateResult(m)], m, 0); %画图
-% end
+for m = 1:4
+    systemConfig.wireless.bandWidth = m*10e6*2; %带宽kMHz
+    % 做多次实验求平均——任务到达率的变化
+    for i = 1:systemConfig.experimentTimes
+        changeRateResultArr(i).arriveRateChange = arriveRateChange(); %任务到达率的改变
+    end
+    changeRateResult(m) = getAverageOfSeveralExperimentTimes(changeRateResultArr);
+    % [changeRateResult] = arriveRateChange(); %任务到达率的改变
+    arriveRateChange_draw([changeRateResult(m)]); %画图
+end
 
 % 调整作图
 % for m = 1:4
@@ -37,21 +40,41 @@ figure_Num = 0;
 % end
 
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
-% for n = 1:4
-%     systemConfig.wireless.bandWidth = n*10e6*2; %带宽nMHz
-%     % 做多次实验求平均——任务体积的变化
-%     for j = 1:systemConfig.experimentTimes
-%         changeTaskSizeResultArr(j).changeTaskSize = taskSizeChange(); %任务体积的改变
-%     end
-%     changeTaskSizeResult(n) = getAverageOfSeveralExperimentTimes(changeTaskSizeResultArr);
-%     % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
-%     taskSizeChange_draw(changeTaskSizeResult(n)); %画图
-% end
+% 重置无线信道带宽，任务到达率
+
+for n = 1:4
+    systemConfig.wireless.bandWidth = n*10e6*2; %带宽nMHz
+    % 做多次实验求平均——任务体积的变化
+    for k = 1:systemConfig.experimentTimes
+        changeTaskSizeResultArr(k).changeTaskSize = taskSizeChange(); %任务体积的改变
+    end
+    changeTaskSizeResult(n) = getAverageOfSeveralExperimentTimes(changeTaskSizeResultArr);
+    % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
+    taskSizeChange_draw(changeTaskSizeResult(n)); %画图
+end
 %调整作图
 % for n = 1:4
 %     taskSizeChange_draw([changeTaskSizeResult(n)]); %画图
 % end
 % 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
+
+% 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
+for p = 1:4
+    systemConfig.wireless.bandWidth = p*10e6*2; %带宽nMHz
+    % 做多次实验求平均——任务体积的变化
+    for k = 1:systemConfig.experimentTimes
+        changeEdgeNumResultArr(k).changeEdgeNum = edgeNumChange(); %任务体积的改变
+    end
+    changeEdgeNumResult(p) = getAverageOfSeveralExperimentTimes(changeEdgeNumResultArr);
+    % [changeTaskSizeResult] = taskSizeChange(); %任务体积的改变
+    edgeNumChange_draw(changeEdgeNumResult(p)); %画图
+end
+%调整作图
+% for p = 1:4
+%     edgeNumChange_draw([changeEdgeNumResult(p)]); %画图
+% end
+% 第一个点做三组实验，每一个实验改变无线信道的传输速率（任务体积的改变）
+
 
 
 % 测试模拟退火改进HBA
