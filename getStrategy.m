@@ -1,7 +1,7 @@
 % wireless_gains：%各个设备与边缘节点的无线信道的信道增益
 % c_Edge：边缘服务器的个数
 % deviceNum：设备个数
-function [xmin, FR, FRBest] = getStrategy()
+function [xmin] = getStrategy()
     global systemConfig;
     global bestOffloadNumResult;
     fitfun = @fitnessfun;

@@ -79,7 +79,8 @@ for t = 1:tmax
 %             if deltaBestTemp < 0
 %                 disp('debug');
 %             end
-            pUpdateTemp = exp(deltaBestTemp./(t.*T_annealing));
+%             pUpdateTemp = exp(deltaBestTemp./(t.*T_annealing));
+            pUpdateTemp = exp(deltaBestTemp./(1.*T_annealing));
             if rand < pUpdateTemp
                 fitness(i)=tempFitness; %更新最优值
                 FR(i) = tempFR;
